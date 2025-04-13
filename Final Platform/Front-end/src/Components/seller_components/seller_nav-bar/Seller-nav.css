@@ -1,0 +1,241 @@
+/* General Styles */
+.Navbar-cat {
+  background-color: #ffffff;
+  box-shadow: 0px -3px 9px 9px rgb(241 185 101);
+  padding: 10px 20px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.hedder-section-cat {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+  position: relative;
+}
+
+.hedder-cat {
+  font-size: 24px;
+  font-weight: bold;
+  color: #0071e3;
+  transition: color 0.3s ease;
+}
+
+.hedder-cat:hover {
+  color: #005bb5;
+}
+
+.hedder-right-cat {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.hedder-button-cat {
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.hedder-button-cat:hover {
+  transform: scale(1.1);
+}
+
+.dropdown-container-cat {
+  position: relative;
+  z-index: 1001;
+}
+
+.dropdown-menu-cat {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background-color: #ffffff;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  z-index: 1000;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.dropdown-container-cat:hover .dropdown-menu-cat,
+.dropdown-container-cat:focus-within .dropdown-menu-cat {
+  opacity: 1;
+  visibility: visible;
+}
+
+.dropdown-menu-cat a,
+.dropdown-menu-cat button {
+  color: #1d1d1f;
+  text-decoration: none;
+  font-size: 14px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  padding: 8px 12px;
+  border-radius: 4px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.dropdown-menu-cat a:hover,
+.dropdown-menu-cat button:hover {
+  background-color: #f5f5f7;
+  color: #0071e3;
+}
+
+.dropdown-menu-cat button.logout-button {
+  color: #ff3b30;
+}
+
+.dropdown-menu-cat button.logout-button:hover {
+  background-color: #ff3b30;
+  color: #ffffff;
+}
+
+/* Navbar Menu Section */
+.manu-section-cat {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 10px 0;
+}
+
+.menu-responsive-cat {
+  display: none;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 30px;
+  height: 21px;
+  cursor: pointer;
+  padding: 10px;
+  z-index: 1001;
+}
+
+.menu-responsive-cat span {
+  display: block;
+  width: 100%;
+  height: 3px;
+  background-color: #1d1d1f;
+  transition: all 0.3s ease;
+}
+
+.menu-responsive-cat.open span:nth-child(1) {
+  transform: translateY(9px) rotate(45deg);
+}
+
+.menu-responsive-cat.open span:nth-child(2) {
+  opacity: 0;
+}
+
+.menu-responsive-cat.open span:nth-child(3) {
+  transform: translateY(-9px) rotate(-45deg);
+}
+
+.menu-items-cat {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  transition: all 0.3s ease;
+}
+
+.menu-items-cat li {
+  display: inline-block;
+}
+
+.menu-items-cat a {
+  text-decoration: none;
+  color: #1d1d1f;
+  font-size: 16px;
+  font-weight: 500;
+  padding: 8px 12px;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+  display: block;
+}
+
+.menu-items-cat a:hover {
+  background-color: #f5f5f7;
+  color: #0071e3;
+}
+
+.menu-items-cat .active a {
+  background-color: #b58635;
+  color: #ffffff;
+  font-weight: bold;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+  .menu-responsive-cat {
+    display: flex;
+  }
+
+  .menu-items-cat {
+    position: fixed;
+    top: 70px;
+    left: 0;
+    right: 0;
+    background-color: #ffffff;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    padding: 20px 0;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    transform: translateY(-100%);
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .menu-items-cat.open {
+    transform: translateY(0);
+    opacity: 1;
+    pointer-events: all;
+  }
+
+  .menu-items-cat li {
+    width: 100%;
+    text-align: center;
+  }
+
+  .menu-items-cat a {
+    padding: 12px 20px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .dropdown-menu-cat {
+    position: static;
+    margin-top: 10px;
+    display: none;
+    box-shadow: none;
+    border: none;
+  }
+
+  .dropdown-container-cat:hover .dropdown-menu-cat,
+  .dropdown-container-cat:focus-within .dropdown-menu-cat {
+    display: flex;
+  }
+}
+
+/* Mobile Landscape Optimization */
+@media (max-width: 768px) and (orientation: landscape) {
+  .menu-items-cat {
+    max-height: 60vh;
+    overflow-y: auto;
+  }
+}
