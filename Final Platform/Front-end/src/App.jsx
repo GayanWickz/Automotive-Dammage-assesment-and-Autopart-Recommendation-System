@@ -6,7 +6,7 @@ import Footer from "./Components/footer/Footer";
 import Account from "./Pages/account/Account";
 import Signup from "./Pages/signup/Signup";
 import Login from "./Pages/login/Login";
-
+import Seller_signup from "./Pages/seller/seller_signup/Seller_signup";
 import Seller_nav from "./Components/seller_components/seller_nav-bar/Seller_nav";
 const App = () => {
   return (
@@ -46,9 +46,8 @@ const App = () => {
         
         <Route path="/Login" element={<Login />} />
         <Route path="/Signup" element={<Signup />} />
-        
         <Route path="/Customer_login" element={<Login />} />
-        
+        <Route path="/Seller_signup" element={<Seller_signup />} />
         
         
       </Routes>
