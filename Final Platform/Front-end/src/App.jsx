@@ -7,7 +7,7 @@ import Account from "./Pages/account/Account";
 import Signup from "./Pages/signup/Signup";
 import Login from "./Pages/login/Login";
 
-
+import Seller_nav from "./Components/seller_components/seller_nav-bar/Seller_nav";
 const App = () => {
   return (
     <div className="App">
@@ -15,8 +15,7 @@ const App = () => {
         {/* Customer nav bar */}
         {[
           "",
-          "Men",
-          "Women",
+          
           "Offers",
           "Hot",
           "Contact",
@@ -58,8 +57,7 @@ const App = () => {
         {/* Customer nav bar */}
         {[
           "",
-          "Men",
-          "Women",
+        
           "Offers",
           "Hot",
           "Contact",
