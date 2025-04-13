@@ -6,7 +6,7 @@ import { connectDB } from "./config/db.js";
 
 import { initializeCustomerRoutes } from "./routes/Customer_account_routes.js";
 import CustomerAuthenticationRouter from "./routes/Customer_authentication_routes.js";
-
+import SellerAuthenticationRouter from "./routes/Seller_authentication_routes.js";
 
 
 const app = express();
@@ -31,9 +31,8 @@ connectDB();
 // API Endpoints
 
 app.use("/api/customerauthentication", CustomerAuthenticationRouter);
-
 app.use("/api/customeraccount", initializeCustomerRoutes(io));
-
+app.use("/api/sellers", SellerAuthenticationRouter);
 
 app.get("/", (req, res) => {
     res.send("Good to go");
