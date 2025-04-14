@@ -31,7 +31,49 @@ const Contact = () => {
     return newErrors;
   };
 
-  
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const validationErrors = validate();
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors);
+      return;
+    } else {
+      setErrors({});
+    }
+
+    // Prepare data to be sent to the backend
+    const dataToSend = {
+      Name: formData.name,
+      Email: formData.email,
+      Message: formData.message,
+    };
+
+    setIsSubmitting(true);
+
+    try {
+      // Sending the form data to the backend
+      const response = await axios.post(
+        "http://localhost:3000/api/admincontact/admincsendmessege",
+        dataToSend
+      );
+      if (response.data.success) {
+        alert("Message sent successfully!");
+        setFormData({ name: "", email: "", message: "" }); // Reset form after successful submission
+      } else {
+        setApiError(response.data.message || "Failed to send message.");
+      }
+    } catch (error) {
+      console.error("Error occurred while sending message:", error);
+      setApiError("An error occurred while sending your message.");
+    } finally {
+      setIsSubmitting(false); // Reset the submitting state
+    }
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
 
   return (
     <div>
