@@ -158,7 +158,7 @@ const Home = () => {
       <div className="filter-section">
         <h3>Filter Products</h3>
         <div className="price-filter">
-          <label>Price Range: ${filters.priceRange}</label>
+          <label>Price Range: Rs.{filters.priceRange}</label>
           <input
             type="range"
             min="0"
