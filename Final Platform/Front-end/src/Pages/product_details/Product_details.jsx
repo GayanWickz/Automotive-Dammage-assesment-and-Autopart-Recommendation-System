@@ -71,9 +71,55 @@ const Product_details = () => {
       return;
     }
   
-  
+    try {
+      const response = await axios.post(
+        "http://192.168.137.1:3000/api/pendingcart/pendingcartadd",
+        {
+          CustomerID: customerId, 
+          ProductID: productId,
+          Quantity: quantity,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      alert("Item added to cart successfully!");
+    } catch (error) {
+      console.error("Error adding item to cart:", error.response?.data || error.message);
+      alert("Failed to add item to cart. Please try again.");
+    }
   };
 
+  const handleAddToWishList = async () => {
+    const token = localStorage.getItem("token");
+    const customerId = localStorage.getItem("customerId");
+
+    if (!token) {
+      alert("Please login to add items to wish list.");
+      return;
+    }
+
+    try {
+      const response = await axios.post(
+        "http://192.168.137.1:3000/api/wishlist/wishlistadd",
+        {
+          CustomerID: customerId,
+          ProductID: productId,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      alert("Item added to wish list successfully!");
+    } catch (error) {
+      console.error("Error adding item to  wish list:", error);
+      alert("Failed to add item to  wish list. Please try again.");
+    }
+  };
 
 
 
