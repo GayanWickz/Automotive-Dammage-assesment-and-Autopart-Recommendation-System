@@ -9,6 +9,7 @@ import Login from "./Pages/login/Login";
 import Seller_signup from "./Pages/seller/seller_signup/Seller_signup";
 import Seller_nav from "./Components/seller_components/seller_nav-bar/Seller_nav";
 import Product_details from "./Pages/product_details/Product_details";
+import Cart from "./Pages/cart/Cart";
 const App = () => {
   return (
     <div className="App">
@@ -50,7 +51,7 @@ const App = () => {
         <Route path="/Customer_login" element={<Login />} />
         <Route path="/Seller_signup" element={<Seller_signup />} />
          <Route path="/Product_details" element={<Product_details />} />
-        
+         <Route path="/Cart" element={<Cart />} />
       </Routes>
       {/* Footer */}
       <Routes>
