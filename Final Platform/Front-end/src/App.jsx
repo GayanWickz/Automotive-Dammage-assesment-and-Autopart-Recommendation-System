@@ -8,6 +8,7 @@ import Signup from "./Pages/signup/Signup";
 import Login from "./Pages/login/Login";
 import Seller_signup from "./Pages/seller/seller_signup/Seller_signup";
 import Seller_nav from "./Components/seller_components/seller_nav-bar/Seller_nav";
+import Product_details from "./Pages/product_details/Product_details";
 const App = () => {
   return (
     <div className="App">
@@ -48,7 +49,7 @@ const App = () => {
         <Route path="/Signup" element={<Signup />} />
         <Route path="/Customer_login" element={<Login />} />
         <Route path="/Seller_signup" element={<Seller_signup />} />
-        
+         <Route path="/Product_details" element={<Product_details />} />
         
       </Routes>
       {/* Footer */}
