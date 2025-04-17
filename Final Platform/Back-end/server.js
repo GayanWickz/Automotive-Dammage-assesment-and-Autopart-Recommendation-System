@@ -7,7 +7,7 @@ import { connectDB } from "./config/db.js";
 import { initializeCustomerRoutes } from "./routes/Customer_account_routes.js";
 import CustomerAuthenticationRouter from "./routes/Customer_authentication_routes.js";
 import SellerAuthenticationRouter from "./routes/Seller_authentication_routes.js";
-
+import Productdetails from "./routes/Product_details_routes.js";
 
 const app = express();
 const port = 3000;
@@ -24,7 +24,7 @@ app.use(express.json());
 app.use(cors());
 app.use(express.urlencoded({ extended: true }));
 app.use("/uploads", express.static("uploads"));
-
+app.use("/api/productsdetailsdisplay", Productdetails);
 // Connection to MongoDB
 connectDB();
 
