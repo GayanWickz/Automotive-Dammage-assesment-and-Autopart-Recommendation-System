@@ -1,0 +1,360 @@
+/* product_details.css - Mobile First Approach */
+
+/* Base Styles */
+.product-details-con {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding: 1rem;
+  width: 100%;
+  margin: 0 auto;
+}
+
+/* Image Slider Section */
+.image-slider {
+  position: relative;
+  width: 100%;
+  height: 300px;
+  border-radius: 8px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f8f9fa;
+}
+
+.product-details-image {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  transition: opacity 0.3s ease;
+  padding: 1rem;
+}
+
+.slider-button {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0,0,0,0.5);
+  color: white;
+  border: none;
+  padding: 0.75rem;
+  cursor: pointer;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.3s ease;
+  z-index: 2;
+}
+
+.slider-button:hover {
+  background: rgba(0,0,0,0.8);
+}
+
+.slider-button.left { left: 0.5rem; }
+.slider-button.right { right: 0.5rem; }
+
+/* Product Details Section */
+.product-details-details {
+  width: 100%;
+  padding: 0.5rem;
+}
+
+.text-hili {
+  color: #2c3e50;
+  margin-bottom: 0.75rem;
+  font-size: 1.5rem;
+}
+
+.product-details-top {
+  margin: 0.75rem 0;
+  color: #7f8c8d;
+  line-height: 1.5;
+  font-size: 0.95rem;
+}
+
+.product-details-discount {
+  color: #e74c3c;
+  text-decoration: line-through;
+  margin-left: 0.5rem;
+  font-size: 1rem;
+}
+
+/* Specifications Grid */
+.specs-grid {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  gap: 1rem;
+  margin: 1.5rem 0;
+  padding: 1rem;
+  background: #f8f9fa;
+  border-radius: 8px;
+}
+
+.spec-item {
+  display: flex;
+  flex-direction: column;
+  padding: 0.75rem;
+  background: white;
+  border-radius: 6px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.spec-label {
+  font-weight: 600;
+  color: #34495e;
+  margin-bottom: 0.25rem;
+  font-size: 0.9rem;
+}
+
+.spec-value {
+  color: #7f8c8d;
+  font-size: 0.85rem;
+}
+
+/* Quantity Stepper */
+.product-details-stepper {
+  display: flex;
+  align-items: center;
+  margin: 1.5rem 0;
+  width: 100%;
+  max-width: 180px;
+}
+
+.product-details-stepper-button {
+  background: #f8f9fa;
+  color: #2c3e50;
+  border: 1px solid #dee2e6;
+  padding: 0.5rem;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.product-details-stepper-button:hover {
+  background: #e9ecef;
+  border-color: #ced4da;
+}
+
+.product-details-stepper-input {
+  width: 50px;
+  text-align: center;
+  padding: 0.5rem;
+  border: 1px solid #dee2e6;
+  font-size: 1rem;
+  margin: 0 0.25rem;
+}
+
+/* Action Buttons Container */
+.product-details-button {
+  display: flex;
+  gap: 1rem;
+  margin: 1.5rem 0;
+}
+
+/* Wishlist Button */
+.product-details-wish-button {
+  background: #f8f9fa;
+  padding: 0.5rem;
+  border: 1px solid #dee2e6;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.product-details-wish-img {
+  width: 20px;
+  height: 20px;
+  filter: grayscale(100%);
+  transition: filter 0.3s ease;
+}
+
+/* Cart Button */
+.product-details-cart-button {
+  background: #27ae60;
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 500;
+  flex-grow: 1;
+  transition: all 0.3s ease;
+}
+
+/* Chat Section */
+.product-chat-con {
+  width: 100%;
+  margin: 1.5rem auto;
+  padding: 1rem;
+}
+
+.product-chat {
+  margin: 1rem 0;
+  padding: 1rem;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.product-chat-lable-customer,
+.product-chat-lable-seller {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin: 0.75rem 0;
+  padding: 0.75rem;
+  border-radius: 4px;
+  font-size: 0.9rem;
+}
+
+.product-chat-lable-customer {
+  background: #f0f8ff;
+}
+
+.product-chat-lable-seller {
+  flex-direction: row-reverse;
+  background: #f8f9fa;
+}
+
+.product-chat-image {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.product-chat-show-more-button {
+  display: block;
+  margin: 1rem auto;
+  padding: 0.75rem 1.5rem;
+  background: #3498db;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.95rem;
+}
+
+.product-chat-input {
+  width: 100%;
+  padding: 0.75rem;
+  background: #2ecc71;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+  margin-top: 1rem;
+}
+
+/* Seller Information Section */
+.seller-contact {
+  margin: 1.5rem 0;
+}
+
+.section-title {
+  font-size: 1.2rem;
+  color: #2c3e50;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid #dee2e6;
+}
+
+/* Review Component */
+.product-reviews {
+  margin-top: 1.5rem;
+  padding: 1rem;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+/* Tablet Breakpoint */
+@media (min-width: 600px) {
+  .product-details-con {
+    padding: 1.5rem;
+    gap: 2rem;
+  }
+  
+  .image-slider {
+    height: 350px;
+  }
+  
+  .specs-grid {
+    grid-template-columns: repeat(2, 1fr);
+    padding: 1.25rem;
+  }
+  
+  .product-chat-con {
+    padding: 1.5rem;
+  }
+}
+
+/* Small Desktop Breakpoint */
+@media (min-width: 768px) {
+  .product-details-con {
+    flex-direction: row;
+    padding: 2rem;
+    max-width: 1200px;
+  }
+  
+  .product-details-details {
+    width: 50%;
+    padding: 0 1.5rem;
+  }
+  
+  .image-slider {
+    height: 400px;
+    width: 50%;
+  }
+  
+  .specs-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.25rem;
+  }
+  
+  .product-chat-con {
+    max-width: 1200px;
+  }
+}
+
+/* Large Desktop Breakpoint */
+@media (min-width: 992px) {
+  .image-slider {
+    height: 500px;
+  }
+  
+  .specs-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  
+  .product-details-stepper {
+    max-width: 200px;
+  }
+  
+  .product-details-button {
+    margin: 2rem 0;
+  }
+}
+
+/* Extra Large Breakpoint */
+@media (min-width: 1200px) {
+  .specs-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
