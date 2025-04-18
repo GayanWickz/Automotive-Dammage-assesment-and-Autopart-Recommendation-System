@@ -9,6 +9,8 @@ import CustomerAuthenticationRouter from "./routes/Customer_authentication_route
 import SellerAuthenticationRouter from "./routes/Seller_authentication_routes.js";
 import Productdetails from "./routes/Product_details_routes.js";
 import PendingCartRouter from "./routes/Pending_cart_routes.js";
+import DisplayOffer from "./routes/Offer_product_display_routes.js";
+import DisplayHot from "./routes/Hot_product_display_routes.js";
 const app = express();
 const port = 3000;
 
@@ -34,6 +36,8 @@ app.use("/api/customerauthentication", CustomerAuthenticationRouter);
 app.use("/api/customeraccount", initializeCustomerRoutes(io));
 app.use("/api/sellers", SellerAuthenticationRouter);
 app.use("/api/pendingcart", PendingCartRouter);
+app.use("/api/productsdisplayhot", DisplayHot);
+app.use("/api/productsdisplayoffers", DisplayOffer);
 app.get("/", (req, res) => {
     res.send("Good to go");
 });
