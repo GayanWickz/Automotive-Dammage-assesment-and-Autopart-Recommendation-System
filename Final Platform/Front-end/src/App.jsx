@@ -11,6 +11,7 @@ import Seller_nav from "./Components/seller_components/seller_nav-bar/Seller_nav
 import Product_details from "./Pages/product_details/Product_details";
 import Cart from "./Pages/cart/Cart";
 import Hot from "./Pages/hot/Hot";
+import Offers from "./Pages/offers/Offers";
 const App = () => {
   return (
     <div className="App">
@@ -54,6 +55,7 @@ const App = () => {
          <Route path="/Product_details" element={<Product_details />} />
          <Route path="/Cart" element={<Cart />} />
          <Route path="/Hot" element={<Hot />} />
+         <Route path="/Offers" element={<Offers />} />
       </Routes>
       {/* Footer */}
       <Routes>
