@@ -20,7 +20,7 @@ const Cart = () => {
 
     const fetchCartItems = async () => {
       try {
-        const apiUrl = `http://192.168.137.1:3000/api/pendingcart/pendingcartfetch/${customerId}`;
+        const apiUrl = `https://192.168.1.2:3000/api/pendingcart/pendingcartfetch/${customerId}`;
         const response = await fetch(apiUrl);
         const data = await response.json();
 
@@ -52,7 +52,7 @@ const Cart = () => {
 
   const handleRemoveItem = async (itemId) => {
     try {
-      const apiUrl = `http://192.168.137.1:3000/api/pendingcart/pendingcartremove/${itemId}`;
+      const apiUrl = `https://192.168.1.2:3000/api/pendingcart/pendingcartremove/${itemId}`;
       const response = await fetch(apiUrl, {
         method: "DELETE",
       });
@@ -89,7 +89,7 @@ const Cart = () => {
     }
 
     try {
-      const apiUrl = `http://192.168.137.1:3000/api/pendingcart/pendingcartclear/${customerId}`;
+      const apiUrl = `https://192.168.1.2:3000/api/pendingcart/pendingcartclear/${customerId}`;
       const response = await fetch(apiUrl, { method: "DELETE" });
 
       if (response.ok) {
@@ -125,7 +125,128 @@ const Cart = () => {
       .toFixed(2);
   };
 
+  const handleCheckout = async () => {
+    setShowPayPal(true);
+    setTimeout(() => {
+      const script = document.createElement("script");
+      script.src =
+        "https://www.paypal.com/sdk/js?client-id=AZovmUB7eg8d5w4cgxO3AbgrZYDASxGOOiPcPasso9CDNARErdnzBkRN97snU5_kPSsy_Jh8tsV1iNPm&currency=USD";
+      script.async = true;
+      script.onload = () => {
+        window.paypal
+          .Buttons({
+            createOrder: (data, actions) => {
+              return actions.order.create({
+                purchase_units: [
+                  {
+                    amount: {
+                      value: getTotal(),
+                    },
+                  },
+                ],
+              });
+            },
+            onApprove: async (data, actions) => {
+              try {
+                const details = await actions.order.capture();
+                alert(
+                  `Transaction completed by ${details.payer.name.given_name}`
+                );
 
+                const orderData = {
+                  customerId: localStorage.getItem("customerId"),
+                  items: cartItems.map((item) => ({
+                    productId: item.ProductID._id,
+                    quantity: item.Quantity,
+                    price: item.Price,
+                  })),
+                  totalAmount: getTotal(),
+                  paymentId: details.id,
+                  paymentStatus: "Completed",
+                };
+
+                const response = await fetch(
+                  "https://192.168.1.2:3000/api/orders/orderdatasend/",
+                  {
+                    method: "POST",
+                    headers: {
+                      "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(orderData),
+                  }
+                );
+
+                if (response.ok) {
+                  alert("Order placed successfully!");
+
+                  // Clear the pending cart from the database
+                  const customerId = localStorage.getItem("customerId");
+                  const clearCartResponse = await fetch(
+                    `https://192.168.1.2:3000/api/pendingcart/pendingcartclear/${customerId}`,
+                    { method: "DELETE" }
+                  );
+
+                  if (clearCartResponse.ok) {
+                    // Clear local state and local storage
+                    setCartItems([]);
+                    localStorage.removeItem("cart");
+                    alert("Checkout successful, Email has been sent to you!");
+                  } else {
+                    const clearCartError = await clearCartResponse.json();
+                    console.error(
+                      "Error clearing cart:",
+                      clearCartError.message
+                    );
+                    alert(
+                      "Checkout successful, but failed to clear the cart. Please try again."
+                    );
+                  }
+
+                  // Send confirmation email (if necessary)
+                  const customerEmail = localStorage.getItem("customerEmail");
+                  if (customerEmail) {
+                    const emailResponse = await fetch(
+                      "https://192.168.1.2:3000/api/email/send-email",
+                      {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({
+                          to: customerEmail,
+                          subject: "Order Confirmation",
+                          text: `Dear customer, your payment of $${getTotal()} has been successfully received. Thank you for shopping with us!`,
+                        }),
+                      }
+                    );
+
+                    if (!emailResponse.ok) {
+                      console.error(
+                        "Email sending failed:",
+                        await emailResponse.text()
+                      );
+                      alert(
+                        "Failed to send confirmation email. Please contact support."
+                      );
+                    }
+                  }
+                } else {
+                  console.error("Error saving order:", await response.json());
+                  alert("Failed to save the order. Please contact support.");
+                }
+              } catch (err) {
+                console.error("Payment processing error:", err);
+                alert("An error occurred during payment processing.");
+              }
+            },
+
+            onError: (err) => {
+              console.error("PayPal Checkout error:", err);
+            },
+          })
+          .render("#paypal-button-container");
+      };
+      document.body.appendChild(script);
+    }, 500);
+  };
 
   if (loading) {
     return <p>Loading...</p>;
@@ -146,7 +267,7 @@ const Cart = () => {
             cartItems.map((item) => (
               <div className="product" key={item._id}>
                 <img
-                  src={`http://192.168.137.1:3000/uploads/${item.ImageFile}`}
+                  src={`https://192.168.1.2:3000/uploads/${item.ImageFile}`}
                   alt={item.ProductName}
                 />
                 <div className="product-info">
@@ -182,7 +303,7 @@ const Cart = () => {
         <div className="cart-total">
           <p>
             <span className="my">Total Price</span>
-            <span className="my1">Rs. {getTotal()}</span>
+            <span className="my1">$. {getTotal()}</span>
           </p>
           <p>
             <span className="my">Number of Items</span>
@@ -192,7 +313,7 @@ const Cart = () => {
           </p>
           <p>
             <span className="my">You Save</span>
-            <span className="my1">Rs. 0.00</span>
+            <span className="my1">$. 0.00</span>
           </p>
           <button onClick={handleCheckout} style={{ marginBottom: "20px" }}>
             Proceed to Checkout
