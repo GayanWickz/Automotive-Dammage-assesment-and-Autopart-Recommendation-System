@@ -14,7 +14,7 @@ gmailController.post("/send-email", async (req, res) => {
     const transporter = nodemailer.createTransport({
       service: "gmail",
       auth: {
-        user: "green.shopping.nsbm@gmail.com", 
+        user: "autopartgenius.nsbm@gmail.com", 
         pass: "sxby lksk ybgq niny ", 
       },
     });
