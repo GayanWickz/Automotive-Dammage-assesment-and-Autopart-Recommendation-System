@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+ import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { createPortal } from "react-dom";
 import axios from "axios";
@@ -51,7 +51,7 @@ const Product_details = () => {
   const fetchProductDetails = async () => {
     try {
       const response = await axios.get(
-        `http://192.168.137.1:3000/api/productsdetailsdisplay/${productId}`
+        `https://192.168.1.2:3000/api/productsdetailsdisplay/${productId}`
       );
       setProduct(response.data);
     } catch (error) {
@@ -73,7 +73,7 @@ const Product_details = () => {
   
     try {
       const response = await axios.post(
-        "http://192.168.137.1:3000/api/pendingcart/pendingcartadd",
+        "https://192.168.1.2:3000/api/pendingcart/pendingcartadd",
         {
           CustomerID: customerId, 
           ProductID: productId,
@@ -103,7 +103,7 @@ const Product_details = () => {
 
     try {
       const response = await axios.post(
-        "http://192.168.137.1:3000/api/wishlist/wishlistadd",
+        "https://192.168.1.2:3000/api/wishlist/wishlistadd",
         {
           CustomerID: customerId,
           ProductID: productId,
@@ -121,7 +121,18 @@ const Product_details = () => {
     }
   };
 
-
+  // Fetch initial questions
+  const [Questions, setQuestions] = useState([]);
+  const fetchQuestions = async () => {
+    try {
+      const response = await axios.get(
+        `https://192.168.1.2:3000/api/productsshowquestions/${productId}`
+      );
+      setQuestions(response.data);
+    } catch (error) {
+      console.error("Error fetching questions:", error);
+    }
+  };
 
   const [socket, setSocket] = useState(null);
   useEffect(() => {
@@ -293,7 +304,7 @@ const SellerContactDetails = ({ seller }) => {
               </button>
               <img
                 className="product-details-image"
-                src={`http://192.168.137.1:3000/uploads/${product.ImageFiles[currentImageIndex]}`}
+                src={`https://192.168.1.2:3000/uploads/${product.ImageFiles[currentImageIndex]}`}
                 alt={product.ProductName || "Product Image"}
               />
               <button className="slider-button right" onClick={handleNextImage}>
@@ -409,7 +420,7 @@ const SellerContactDetails = ({ seller }) => {
                     question.ProductID &&
                     question.ProductID.SellerID &&
                     question.ProductID.SellerID.LogoImageFile
-                      ? `http://192.168.137.1:3000/uploads/${question.ProductID.SellerID.LogoImageFile}`
+                      ? `https://192.168.1.2:3000/uploads/${question.ProductID.SellerID.LogoImageFile}`
                       : "default-logo.png"
                   }
                   alt={

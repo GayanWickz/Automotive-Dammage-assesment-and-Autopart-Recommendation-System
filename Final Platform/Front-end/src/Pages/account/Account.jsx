@@ -1,7 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import io from "socket.io-client";
 import "./account.css";
 
 const Account = () => {
@@ -17,15 +16,12 @@ const Account = () => {
   const [questions, setQuestions] = useState([]);
   const [orders, setOrders] = useState([]);
   const navigate = useNavigate();
-  
-  // Initialize the socket connection
-  const socket = io("http://localhost:3000");
 
   useEffect(() => {
     const fetchCustomerDetails = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:3000/api/customeraccount/${customerId}`
+          `https://192.168.1.2:3000/api/customeraccount/${customerId}`
         );
         setCustomer(response.data);
         setFormData({
@@ -48,14 +44,16 @@ const Account = () => {
     const fetchQuestions = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:3000/api/customerreply/reply?customerId=${customerId}`
+          `https://192.168.1.2:3000/api/customerreply/reply?customerId=${customerId}`
         );
-        setQuestions(response.data);
+        // Make sure to use response.data.questions if you changed the response format
+        setQuestions(response.data.questions || response.data);
       } catch (error) {
         console.error("Error fetching questions:", error);
+        setQuestions([]); // Set empty array on error
       }
     };
-
+  
     if (customerId) {
       fetchQuestions();
     }
@@ -65,7 +63,7 @@ const Account = () => {
     const fetchOrders = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:3000/api/customerorder/orders?customerId=${customerId}`
+          `https://192.168.1.2:3000/api/customerorder/orders?customerId=${customerId}`
         );
         setOrders(response.data);
       } catch (error) {
@@ -78,33 +76,6 @@ const Account = () => {
     }
   }, [customerId]);
 
-  // Socket.IO: Handle real-time replies
-  useEffect(() => {
-    socket.on("update-replies", (newReply) => {
-      setQuestions((prevQuestions) => [...prevQuestions, newReply]);
-    });
-
-    socket.on("order-update", (updatedOrder) => {
-      setOrders((prevOrders) => {
-        const orderIndex = prevOrders.findIndex(
-          (order) => order.orderId === updatedOrder.orderId
-        );
-
-        if (orderIndex !== -1) {
-          const updatedOrders = [...prevOrders];
-          updatedOrders[orderIndex] = updatedOrder;
-          return updatedOrders;
-        } else {
-          return [...prevOrders, updatedOrder];
-        }
-      });
-    });
-
-    return () => {
-      socket.disconnect();
-    };
-  }, []);
-
   const handleInputChange = (e) => {
     setFormData({
       ...formData,
@@ -115,7 +86,7 @@ const Account = () => {
   const handleUpdate = async () => {
     try {
       const response = await axios.put(
-        `http://localhost:3000/api/customeraccount/${customerId}`,
+        `https://192.168.1.2:3000/api/customeraccount/${customerId}`,
         formData
       );
       setCustomer(response.data);
@@ -129,7 +100,7 @@ const Account = () => {
     if (window.confirm("Are you sure you want to delete your account? This action cannot be undone.")) {
       try {
         await axios.delete(
-          `http://localhost:3000/api/customeraccount/${customerId}`
+          `https://192.168.1.2:3000/api/customeraccount/${customerId}`
         );
         localStorage.removeItem("token");
         localStorage.removeItem("customerId");
@@ -143,14 +114,13 @@ const Account = () => {
   const handleDeleteQuestion = async (questionId) => {
     try {
       const response = await axios.delete(
-        `http://localhost:3000/api/customerdeletereply/${questionId}`
+        `https://192.168.1.2:3000/api/customerdeletereply/${questionId}`
       );
 
       if (response.data.success) {
         setQuestions((prevQuestions) =>
           prevQuestions.filter((question) => question._id !== questionId)
         );
-        socket.emit("delete-reply", questionId);
       } else {
         console.error("Error deleting question:", response.data.message);
       }
@@ -305,33 +275,36 @@ const Account = () => {
             <tbody>
               {questions.map((question) => (
                 <tr key={question._id}>
-                  <td onClick={() => handleClick(question.ProductID._id)}>
+                  <td onClick={() => handleClick(question.ProductID?._id)}>
                     <img
                       className="customer-chat-table-image"
                       src={
-                        `http://localhost:3000/uploads/${question.ProductID.ImageFile}` ||
-                        "product.png"
+                        question.ProductID?.ImageFiles?.[0]
+                          ? `https://192.168.1.2:3000/uploads/${question.ProductID.ImageFiles[0]}`
+                          : "1.jpg" // Fallback image
                       }
-                      alt="edit"
+                      alt="product"
                     />
                   </td>
                   <td
                     data-label="Product Name"
-                    onClick={() => handleClick(question.ProductID._id)}
+                    onClick={() => handleClick(question.ProductID?._id)}
                   >
-                    {question.ProductID.ProductName}
+                    {question.ProductID?.ProductName || "N/A"}
                   </td>
                   <td
                     data-label="Question"
                     className="customer-chat-qa"
-                    onClick={() => handleClick(question.ProductID._id)}
+                    onClick={() => handleClick(question.ProductID?._id)}
                   >
                     {question.Question}
                   </td>
                   <td
-                    onClick={() => handleClick(question.ProductID._id)}
+                    onClick={() => handleClick(question.ProductID?._id)}
                     data-label="Answer"
-                    className={`customer-chat-qa ${question.Answer}`}
+                    className={`customer-chat-qa ${
+                      question.Answer === "pending" ? "pending" : "answered"
+                    }`}
                   >
                     {question.Answer}
                   </td>
