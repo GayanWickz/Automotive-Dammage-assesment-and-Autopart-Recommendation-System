@@ -16,6 +16,7 @@
 }
 
 .product-add-input-box {
+  
   height: 40px;
   width: 100%;
   margin: 12px 0;
@@ -25,6 +26,7 @@
 }
 
 .product-add-input-box-select {
+  color: #000;
   height: auto;
   width: 100%;
   margin: 12px 0;

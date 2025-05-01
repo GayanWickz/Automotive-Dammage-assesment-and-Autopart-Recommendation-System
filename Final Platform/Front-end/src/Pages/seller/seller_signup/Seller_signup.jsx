@@ -4,7 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./seller_signup.css";
 
-const libraries = ["places"]; // Load the Places library for additional features
+const libraries = ["places"]; 
 
 const Seller_signup = () => {
   const [formData, setFormData] = useState({
@@ -25,7 +25,7 @@ const Seller_signup = () => {
 
   // Google Maps configuration
   const { isLoaded, loadError } = useLoadScript({
-    googleMapsApiKey: "AIzaSyD8R5Zu_Z9S9xv4LL3RqQdrM_2DCbY2WS4", // Replace with your API key
+    googleMapsApiKey: "AIzaSyD8R5Zu_Z9S9xv4LL3RqQdrM_2DCbY2WS4", 
     libraries,
   });
 
@@ -111,7 +111,7 @@ const Seller_signup = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:3000/api/sellerauthentication/sellersignup",
+        "https://192.168.1.2:3000/api/sellerauthentication/sellersignup",
         formDataToSubmit,
         {
           headers: {

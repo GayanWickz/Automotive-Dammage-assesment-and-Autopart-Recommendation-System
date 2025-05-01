@@ -58,13 +58,13 @@ const StockStatus = [
 const AddProduct = () => {
   const [files, setFiles] = useState([]);
   const [formData, setFormData] = useState({
-    productType: "Vehicle", // Default to Vehicle form
+    productType: "Vehicle", 
     productName: "",
     shortDescription: "",
     longDescription: "",
     price: "",
-    discount: "", // Only for part form
-    quantity: "", // Only for part form
+    discount: "", 
+    quantity: "", 
     advertise: null,
     vehicleType: "",
     vehicleBrand: null,
@@ -79,7 +79,7 @@ const AddProduct = () => {
     partCondition: "",
     partNumber: "",
     stockStatus: null,
-    associatedVehicle: null, // For part form to associate with a vehicle
+    associatedVehicle: null, 
   });
   const [errors, setErrors] = useState({});
   const [filePreviews, setFilePreviews] = useState([]);
@@ -268,7 +268,7 @@ const AddProduct = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:3000/api/ecommerceproduct/add",
+        "https://192.168.1.2:3000/api/ecommerceproduct/add",
         formDataToSend,
         {
           headers: {

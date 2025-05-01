@@ -296,19 +296,15 @@ const Seller_profile = () => {
                 placeholder="Phone Number"
               />
               <label>Location</label>
-              <LoadScript googleMapsApiKey="AIzaSyB6MyHuGbmEQ1DevrMLF-E-Kfk6v7KIWjw">
-                <GoogleMap
-                  mapContainerStyle={mapContainerStyle}
-                  center={mapCenter}
-                  zoom={mapCenter.lat === 0 && mapCenter.lng === 0 ? 2 : 10}
-                  onClick={handleMapClick}
-                >
-                  {console.log("Marker Position in Render:", markerPosition)} {/* Debug log */}
-                  {markerPosition && (
-                    <Marker position={markerPosition} />
-                  )}
-                </GoogleMap>
-              </LoadScript>
+              <GoogleMap
+  mapContainerStyle={mapContainerStyle}
+  center={mapCenter}
+  zoom={mapCenter.lat === 0 && mapCenter.lng === 0 ? 2 : 10}
+  onClick={handleMapClick}
+>
+  {console.log("Marker Position in Render:", markerPosition)}
+  {markerPosition && <Marker position={markerPosition} />}
+</GoogleMap>
               <label>Latitude</label>
               <input
                 type="text"

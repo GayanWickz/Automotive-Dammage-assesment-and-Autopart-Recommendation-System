@@ -15,7 +15,7 @@ const Seller_home = () => {
     const fetchProducts = async () => {
       try {
         const response = await fetch(
-          `http://localhost:3000/api/productssellerdisplay?sellerID=${sellerID}`
+          `https://192.168.1.2:3000/api/productssellerdisplay?sellerID=${sellerID}`
         );
         if (!response.ok) {
           throw new Error("Failed to fetch products");
@@ -36,7 +36,7 @@ const Seller_home = () => {
   const handleDelete = async (productId) => {
     try {
       const response = await fetch(
-        `http://localhost:3000/api/productsdelete/${productId}`,
+        `https://192.168.1.2:3000/api/productsdelete/${productId}`,
         {
           method: "DELETE",
         }
@@ -80,7 +80,7 @@ const Seller_home = () => {
                     <img
                       className="seller-home-table-image"
                       src={
-                        `http://localhost:3000/uploads/${product.ImageFiles[0]}` ||
+                        `https://192.168.1.2:3000/uploads/${product.ImageFiles[0]}` ||
                         "product.png"
                       }
                       alt={product.ProductName}

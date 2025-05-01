@@ -9,6 +9,7 @@ const Chat = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedQuestion, setSelectedQuestion] = useState(null);
   const sellerId = localStorage.getItem("sellerId");
+  console.log("sellerId:", sellerId);
 
   // Fetch questions based on sellerId
   useEffect(() => {

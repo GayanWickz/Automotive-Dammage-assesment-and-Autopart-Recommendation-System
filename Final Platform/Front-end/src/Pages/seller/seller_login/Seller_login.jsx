@@ -50,7 +50,7 @@ const Seller_login = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:3000/api/sellerauthentication/sellerlogin",
+        "https://192.168.1.2:3000/api/sellerauthentication/sellerlogin",
         formData
       );
 
