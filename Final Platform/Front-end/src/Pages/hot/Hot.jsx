@@ -78,14 +78,10 @@ const Hot = () => {
                 </div>
               </div>
               <div className="card-image">
-                {product.ImageFile ? (
-                  <img
-                    src={`https://192.168.1.2:3000/uploads/${product.ImageFile}`}
-                    alt={product.ProductName}
-                  />
-                ) : (
-                  <div className="placeholder-image">Image not available</div>
-                )}
+              <img
+                src={`https://192.168.1.2:3000/uploads/${product.ImageFiles[0]}`}
+                alt={product.ProductName}
+              />
               </div>
               <div className="card-info">
                 <div className="name">

@@ -53,7 +53,7 @@ const Contact = () => {
     try {
       // Sending the form data to the backend
       const response = await axios.post(
-        "http://localhost:3000/api/admincontact/admincsendmessege",
+        "https://192.168.1.2:3000/api/admincontact/admincsendmessege",
         dataToSend
       );
       if (response.data.success) {
@@ -95,8 +95,8 @@ const Contact = () => {
           <div className="contact-email details">
             <img className="contact-icon" src="hd-letter-email-round-blue-icon-transparent-png-70175169503463700jpjirgdw.png" alt="" />
             <h4>E-mail</h4>
-            <p>support@example.com</p>
-            <p>info@example.com</p>
+          
+            <p>autopartgenius@gmail.com</p>
           </div>
         </div>
         <div className="contact-right-side">

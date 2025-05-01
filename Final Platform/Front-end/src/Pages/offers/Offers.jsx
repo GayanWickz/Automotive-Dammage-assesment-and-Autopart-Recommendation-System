@@ -75,7 +75,7 @@ const Offers = () => {
             </div>
             <div className="card-image">
               <img
-                src={`https://192.168.1.2:3000/uploads/${product.ImageFile}`}
+                src={`https://192.168.1.2:3000/uploads/${product.ImageFiles[0]}`}
                 alt={product.ProductName}
               />
             </div>

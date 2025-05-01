@@ -48,7 +48,7 @@ const Login = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:3000/api/customerauthentication/customerlogin",
+        "https://192.168.1.2:3000/api/customerauthentication/customerlogin",
         formData
       );
 

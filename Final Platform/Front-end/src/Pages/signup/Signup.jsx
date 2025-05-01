@@ -67,7 +67,7 @@ const Signup = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:3000/api/customerauthentication/customersignup",
+        "https://192.168.1.2:3000/api/customerauthentication/customersignup",
         formData
       );
 
