@@ -15,7 +15,7 @@
     text-align: center;
     color: #e2e2e2;
     font-family: "Times New Roman", Times, serif;
-    background: linear-gradient(45deg, #951420fa, #000, #ffe8d0e0);
+    background: linear-gradient(1deg, #000000fa, #000, #ffe8d0e0);
   }
   
   table.sadmin {
@@ -40,7 +40,7 @@
   
   }
   th.sadmin {
-    background: linear-gradient(45deg, #9f0202, #2b2d2b);
+    background: linear-gradient(271deg, #000000, #2b2d2b);
     color: white;
     text-transform: uppercase;
     letter-spacing: 1px;
@@ -74,7 +74,22 @@
   button.sadmin:hover {
     background-color: #207c37;
   }
-  
+  .admin-main-title {
+    color: #c29d7b;
+    margin-bottom: 20px;
+}
+
+.admin-stat-value {
+  color: white;
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+.admin-stat-title {
+  color: white;
+  margin-bottom: 10px;
+  font-size: 1.2rem;
+}
   img.sadmin {
     border-radius: 8px;
     object-fit: cover;

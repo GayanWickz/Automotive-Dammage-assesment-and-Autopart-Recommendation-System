@@ -1,12 +1,16 @@
 .admin-navbar {
-  background: linear-gradient(45deg, #951420fa, #000, #ffe8d0e0);
+  background: linear-gradient(1deg, #000000fa, #000, #ffe8d0e0);
     padding: 1rem;
     display: flex;
     justify-content: center;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     
   }
-  
+  .fa-brands:before, .fa-regular:before, .fa-solid:before, .fa:before, .fab:before, .far:before, .fas:before {
+    content: var(--fa);
+    color: white;
+}
+
   .navbar-links {
     list-style: none;
     display: flex;
