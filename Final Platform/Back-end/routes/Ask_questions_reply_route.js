@@ -18,8 +18,6 @@ AskQuestionReply.get("/", async (req, res) => {
       (question) => question.ProductID?.SellerID.toString() === sellerId
     );
 
-    io.emit("update-questions", filteredQuestions);
-
     res.status(200).json(filteredQuestions);
   } catch (error) {
     console.error("Error fetching questions:", error);
