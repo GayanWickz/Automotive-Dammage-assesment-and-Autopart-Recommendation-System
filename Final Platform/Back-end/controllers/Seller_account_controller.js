@@ -23,6 +23,11 @@ export const updateSelleraccount = async (req, res) => {
     const { id } = req.params;
     const updates = req.body;
 
+    // Parse SellerLocation if it exists
+    if (updates.SellerLocation) {
+      updates.SellerLocation = JSON.parse(updates.SellerLocation);
+    }
+
     if (req.file) {
       updates.LogoImageFile = req.file.filename;
     }

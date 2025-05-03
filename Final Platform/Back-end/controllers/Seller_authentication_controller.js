@@ -2,9 +2,6 @@ import SellerAuthenticationModel from "../models/Seller_authentication_platform.
 import jwt from "jsonwebtoken";
 import bcryptjs from "bcryptjs";
 import validator from "validator";
-import { uploadToGoogleDrive } from "../models/googleDriveHelper.js"; // Import the upload function
-import fs from "fs";
-import path from "path";
 
 // Helper function to generate a JWT
 const generateToken = (sellerId) => {
@@ -101,11 +98,10 @@ const SellerLogin = async (req, res) => {
   }
 };
 
-
-
-//seller signup
 // Seller signup
 const SellerSignup = async (req, res) => {
+  const imageFileName = req.file?.filename || "default.jpg";
+
   try {
     const {
       SellerName,
@@ -117,7 +113,7 @@ const SellerSignup = async (req, res) => {
       SellerPassword,
     } = req.body;
 
-    // Validate input (same as before)
+    // Validate input
     if (
       !SellerName ||
       !SellerEmail ||
@@ -142,7 +138,7 @@ const SellerSignup = async (req, res) => {
       });
     }
 
-    // Check if email is already registered (same as before)
+    // Check if email is already registered
     const exists = await SellerAuthenticationModel.findOne({ SellerEmail });
     if (exists) {
       console.log("Email already registered:", SellerEmail);
@@ -152,20 +148,8 @@ const SellerSignup = async (req, res) => {
       });
     }
 
-    // Hash password (same as before)
+    // Hash password
     const hashedPassword = await bcryptjs.hash(SellerPassword, 10);
-
-    // Upload image to Google Drive
-    let logoImageUrl = null;
-    if (req.file) {
-      const filePath = req.file.path;
-      const fileName = req.file.filename;
-      logoImageUrl = await uploadToGoogleDrive(filePath, fileName);
-      // Delete the local file after uploading to Google Drive
-      fs.unlinkSync(filePath);
-    } else {
-      logoImageUrl = "default.jpg";
-    }
 
     // Create a new seller
     const newSeller = new SellerAuthenticationModel({
@@ -176,7 +160,7 @@ const SellerSignup = async (req, res) => {
       SellerLocation: JSON.parse(SellerLocation),
       SellerDescription,
       SellerPassword: hashedPassword,
-      LogoImageFile: logoImageUrl, // Store Google Drive URL
+      LogoImageFile: imageFileName, // Store local file name
     });
 
     await newSeller.save();
@@ -194,6 +178,5 @@ const SellerSignup = async (req, res) => {
     });
   }
 };
-
 
 export { SellerLogin, SellerSignup };

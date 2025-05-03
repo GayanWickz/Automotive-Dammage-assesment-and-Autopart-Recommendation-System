@@ -1,7 +1,7 @@
 import ECommerceModel from "../models/Product_add_platform.js";
 import sellerauthenticationrequest from "../models/Seller_authentication_platform.js";
 // Get product by ID
-// Get product by ID
+
 export const getProductById = async (req, res) => {
   try {
     const { id } = req.params;
