@@ -8,7 +8,21 @@
   font-family: Arial, sans-serif;
   color: #333;
 }
-
+.dlbutton{
+  background-color: #970505;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+.new-order-delivered {
+  background-color: #0a6d0a;
+}
+.new-order-processing {
+  background-color: #b3a915;
+}
 .seller-profile-image {
   width: 250px;
   height: 250px;
@@ -34,12 +48,13 @@
 }
 
 .seller-profile-topic {
-  color: #873e23;
+  color: #000000;
   font-weight: bold;
   margin-bottom: 5px;
 }
 
 .seller-profile-p {
+  color: #000;
   opacity: 0.8;
   transition: 300ms ease-out;
 }
@@ -84,7 +99,7 @@
   margin: 5px;
   border: none;
   border-radius: 5px;
-  background-color: #873e23;
+  background-color: #000000;
   color: #fff;
   cursor: pointer;
   transition: background-color 0.3s ease;
@@ -99,7 +114,7 @@
   margin: 10px 5px;
   border: none;
   border-radius: 5px;
-  background-color: #873e23;
+  
   color: #fff;
   cursor: pointer;
   transition: background-color 0.3s ease;

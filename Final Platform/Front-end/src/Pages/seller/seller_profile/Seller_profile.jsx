@@ -40,7 +40,7 @@ const Seller_profile = () => {
 
       try {
         const response = await axios.get(
-          `https://192.168.1.2:3000/api/selleraccount/${sellerId}`
+          `https://192.168.137.1:3000/api/selleraccount/${sellerId}`
         );
 
         console.log("API Response:", response.data); // Debug log
@@ -211,7 +211,7 @@ const Seller_profile = () => {
 
     try {
       const response = await axios.put(
-        `https://192.168.1.2:3000/api/selleraccount/${sellerId}`,
+        `https://192.168.137.1:3000/api/selleraccount/${sellerId}`,
         formData,
         {
           headers: {
@@ -245,7 +245,7 @@ const Seller_profile = () => {
     ) {
       try {
         await axios.delete(
-          `https://192.168.1.2:3000/api/selleraccount/${sellerId}`
+          `https://192.168.137.1:3000/api/selleraccount/${sellerId}`
         );
         localStorage.removeItem("sellerId");
         navigate("/");
@@ -331,17 +331,14 @@ const Seller_profile = () => {
               {seller?.LogoImageFile ? (
                 <img
                   className="seller-profile-image"
-                  src={`https://192.168.1.2:3000/uploads/${seller.LogoImageFile}`}
+                  src={`https://192.168.137.1:3000/uploads/${seller.LogoImageFile}`}
                   alt={seller.LogoImageFile}
                 />
               ) : (
                 <p>No image available</p>
               )}
               <div className="seller-profile-detail-con">
-                <div className="seller-profile-detail">
-                  <h5 className="seller-profile-topic">Seller ID:</h5>
-                  <p className="seller-profile-p">{seller._id}</p>
-                </div>
+                
                 <div className="seller-profile-detail">
                   <h5 className="seller-profile-topic">Seller Name:</h5>
                   <p className="seller-profile-p">{seller.SellerName}</p>
@@ -358,14 +355,9 @@ const Seller_profile = () => {
                   <h5 className="seller-profile-topic">Seller PhoneNumber:</h5>
                   <p className="seller-profile-p">{seller.SellerPhoneNumber}</p>
                 </div>
-                <div className="seller-profile-detail">
-                  <h5 className="seller-profile-topic">Location:</h5>
-                  <p className="seller-profile-p">
-                    Latitude: {seller.SellerLocation.lat}, Longitude: {seller.SellerLocation.lng}
-                  </p>
-                </div>
+                
                 <button onClick={() => setIsEditing(true)}>Edit Profile</button>
-                <button onClick={handleDeleteAccount}>Delete Profile</button>
+                <button className="dlbutton" onClick={handleDeleteAccount}>Delete Profile</button>
               </div>
             </>
           )}

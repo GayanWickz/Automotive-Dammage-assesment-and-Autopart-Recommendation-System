@@ -95,7 +95,7 @@ input[type=file]::file-selector-button:hover {
   border: 1px solid #873e23;
   font-size: 15px;
   color: white;
-  background-color: #873e23;
+  background-color:  #00aaff;
   transition: 300ms ease-out;
 }
 

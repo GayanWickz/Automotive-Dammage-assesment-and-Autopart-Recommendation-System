@@ -1,4 +1,4 @@
- import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { createPortal } from "react-dom";
 import axios from "axios";
@@ -7,10 +7,23 @@ import "./product_details.css";
 import { Questionsm } from "../../Components/Modules/product_details_questions/Product_details_questions";
 import Review from "../../Pages/review/review";
 
-
 const Product_details = () => {
   const [quantity, setQuantity] = useState(1);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [message, setMessage] = useState("");
+  const location = useLocation();
+  const { productId } = location.state || {};
+  const [product, setProduct] = useState(null);
+  const [Questions, setQuestions] = useState([]);
+  const [visibleQuestions, setVisibleQuestions] = useState(3);
+
+  const formatCurrency = (value) => {
+    return value.toLocaleString('en-US', {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    });
+  };
 
   const handleDecrement = () => {
     if (quantity > 1) {
@@ -35,47 +48,37 @@ const Product_details = () => {
     }
   };
 
-  const [modalOpen, setModalOpen] = useState(false);
-  const [message, setMessage] = useState("");
-
   const handleButtonClick = (value) => {
     setModalOpen(false);
     setMessage(value);
   };
 
-  const location = useLocation();
-  const { productId } = location.state || {};
-  const [product, setProduct] = useState(null);
-
-  // Fetch product details
   const fetchProductDetails = async () => {
     try {
       const response = await axios.get(
-        `https://192.168.1.2:3000/api/productsdetailsdisplay/${productId}`
+        `https://192.168.137.1:3000/api/productsdetailsdisplay/${productId}`
       );
       setProduct(response.data);
     } catch (error) {
       console.error("Error fetching product details:", error);
     }
   };
+
   const customerId = localStorage.getItem("customerId");
   console.log("CustomerID:", customerId);
 
   const handleAddToCart = async () => {
     const token = localStorage.getItem("token");
-    const customerId = localStorage.getItem("customerId"); 
-    
-    // Check for both token and customerId
+    const customerId = localStorage.getItem("customerId");
     if (!token || !customerId) {
       alert("Please login to add items to the cart.");
       return;
     }
-  
     try {
       const response = await axios.post(
-        "https://192.168.1.2:3000/api/pendingcart/pendingcartadd",
+        "https://192.168.137.1:3000/api/pendingcart/pendingcartadd",
         {
-          CustomerID: customerId, 
+          CustomerID: customerId,
           ProductID: productId,
           Quantity: quantity,
         },
@@ -95,15 +98,13 @@ const Product_details = () => {
   const handleAddToWishList = async () => {
     const token = localStorage.getItem("token");
     const customerId = localStorage.getItem("customerId");
-
     if (!token) {
       alert("Please login to add items to wish list.");
       return;
     }
-
     try {
       const response = await axios.post(
-        "https://192.168.1.2:3000/api/wishlist/wishlistadd",
+        "https://192.168.137.1:3000/api/wishlist/wishlistadd",
         {
           CustomerID: customerId,
           ProductID: productId,
@@ -116,17 +117,15 @@ const Product_details = () => {
       );
       alert("Item added to wish list successfully!");
     } catch (error) {
-      console.error("Error adding item to  wish list:", error);
-      alert("Failed to add item to  wish list. Please try again.");
+      console.error("Error adding item to wish list:", error);
+      alert("Failed to add item to wish list. Please try again.");
     }
   };
 
-  // Fetch initial questions
-  const [Questions, setQuestions] = useState([]);
   const fetchQuestions = async () => {
     try {
       const response = await axios.get(
-        `https://192.168.1.2:3000/api/productsshowquestions/${productId}`
+        `https://192.168.137.1:3000/api/productsshowquestions/${productId}`
       );
       setQuestions(response.data);
     } catch (error) {
@@ -137,23 +136,18 @@ const Product_details = () => {
   const [socket, setSocket] = useState(null);
   useEffect(() => {
     const newSocket = io("http://localhost:3000");
-
     newSocket.on("connect", () => {
       console.log("Connected to WebSocket server");
     });
-
     newSocket.on("new-question", (data) => {
       if (data?.productId === productId) {
         setQuestions((prevQuestions) => [data.question, ...prevQuestions]);
       }
     });
-
     newSocket.on("disconnect", () => {
       console.log("Disconnected from WebSocket server");
     });
-
     setSocket(newSocket);
-
     return () => {
       newSocket.removeAllListeners();
       newSocket.close();
@@ -167,7 +161,6 @@ const Product_details = () => {
     }
   }, [productId]);
 
-  const [visibleQuestions, setVisibleQuestions] = useState(3);
   const showMoreQuestions = () => {
     setVisibleQuestions((prev) => prev + 3);
   };
@@ -184,34 +177,32 @@ const Product_details = () => {
     );
   };
 
-// Add this new component above the VehicleDetails component
-const SellerContactDetails = ({ seller }) => {
-  if (!seller) return null;
-
-  return (
-    <div className="seller-contact">
-      <h3 className="section-title">Seller Information</h3>
-      <div className="specs-grid">
-        <div className="spec-item">
-          <span className="spec-label">Seller Name</span>
-          <span className="spec-value">{seller.SellerName}</span>
-        </div>
-        <div className="spec-item">
-          <span className="spec-label">Contact Number</span>
-          <span className="spec-value">{seller.SellerPhoneNumber}</span>
-        </div>
-        <div className="spec-item">
-          <span className="spec-label">Email</span>
-          <span className="spec-value">{seller.SellerEmail}</span>
-        </div>
-        <div className="spec-item">
-          <span className="spec-label">Address</span>
-          <span className="spec-value">{seller.SellerAddress}</span>
+  const SellerContactDetails = ({ seller }) => {
+    if (!seller) return null;
+    return (
+      <div className="seller-contact">
+        <h3 className="section-title">Seller Information</h3>
+        <div className="specs-grid">
+          <div className="spec-item">
+            <span className="spec-label">Seller Name</span>
+            <span className="spec-value">{seller.SellerName}</span>
+          </div>
+          <div className="spec-item">
+            <span className="spec-label">Contact Number</span>
+            <span className="spec-value">{seller.SellerPhoneNumber}</span>
+          </div>
+          <div className="spec-item">
+            <span className="spec-label">Email</span>
+            <span className="spec-value">{seller.SellerEmail}</span>
+          </div>
+          <div className="spec-item">
+            <span className="spec-label">Address</span>
+            <span className="spec-value">{seller.SellerAddress}</span>
+          </div>
         </div>
       </div>
-    </div>
-  );
-};
+    );
+  };
 
   const VehicleDetails = ({ product }) => (
     <div className="vehicle-details">
@@ -294,7 +285,7 @@ const SellerContactDetails = ({ seller }) => {
   );
 
   return (
-    <div>
+    <div className="product-details-page">
       {product ? (
         <section className="product-details-con">
           <div className="product-details-image-con">
@@ -304,72 +295,64 @@ const SellerContactDetails = ({ seller }) => {
               </button>
               <img
                 className="product-details-image"
-                src={`https://192.168.1.2:3000/uploads/${product.ImageFiles[currentImageIndex]}`}
+                src={`https://192.168.137.1:3000/uploads/${product.ImageFiles[currentImageIndex]}`}
                 alt={product.ProductName || "Product Image"}
               />
               <button className="slider-button right" onClick={handleNextImage}>
                 &gt;
               </button>
             </div>
-            {/* Review Component */}
-          {product.SellerID && (
-                        <div className="product-reviews">
-                            <Review sellerId={product.SellerID} />
-                        </div>
-                    )}
+            {product.SellerID && (
+              <div className="product-reviews">
+                <Review sellerId={product.SellerID} />
+              </div>
+            )}
           </div>
           <div className="product-details-details">
             <h3 className="text-hili">{product.ProductName}</h3>
             <h4>{product.ShortDescription}</h4>
             <p className="product-details-top">{product.LongDescription}</p>
-
-              {/* Updated price display with conditional discount */}
-      {product.Discount > 0 ? (
-        <>
-          <h4 className="product-details-top text-hili">
-            Rs.{(product.Price - (product.Price * product.Discount) / 100).toFixed(2)}
-          </h4>
-          <h5 className="product-details-discount">Rs.{product.Price}</h5>
-        </>
-      ) : (
-        <h4 className="product-details-top text-hili">Rs.{product.Price}</h4>
-      )}
-
-  {/* Conditional Details Render */}
-  {product.ProductType === "Vehicle" ? (
+            {product.Discount > 0 ? (
+              <>
+                <h4 className="product-details-top text-hili">
+                  Rs. {formatCurrency(product.Price - (product.Price * product.Discount) / 100)}
+                </h4>
+                <h5 className="product-details-discount">Rs. {formatCurrency(product.Price)}</h5>
+              </>
+            ) : (
+              <h4 className="product-details-top text-hili">Rs. {formatCurrency(product.Price)}</h4>
+            )}
+            {product.ProductType === "Vehicle" ? (
               <VehicleDetails product={product} />
             ) : (
               <PartDetails product={product} />
             )}
-
-{product.SellerID && (
-            <SellerContactDetails seller={product.SellerID} />
-          )}
-
-
-{product.ProductType === "Part" && (
-            <div className="product-details-stepper">
-              <button
-                className="product-details-stepper-button button-left"
-                onClick={handleDecrement}
-              >
-                -
-              </button>
-              <input
-                className="product-details-stepper-input"
-                type="number"
-                value={quantity}
-                onChange={handleInputChange}
-                min="1"
-                max="50"
-              />
-              <button
-                className="product-details-stepper-button button-right"
-                onClick={handleIncrement}
-              >
-                +
-              </button>
-            </div>
+            {product.SellerID && (
+              <SellerContactDetails seller={product.SellerID} />
+            )}
+            {product.ProductType === "Part" && (
+              <div className="product-details-stepper">
+                <button
+                  className="product-details-stepper-button button-left"
+                  onClick={handleDecrement}
+                >
+                  -
+                </button>
+                <input
+                  className="product-details-stepper-input"
+                  type="number"
+                  value={quantity}
+                  onChange={handleInputChange}
+                  min="1"
+                  max="50"
+                />
+                <button
+                  className="product-details-stepper-button button-right"
+                  onClick={handleIncrement}
+                >
+                  +
+                </button>
+              </div>
             )}
             <div className="product-details-button">
               <button
@@ -392,14 +375,10 @@ const SellerContactDetails = ({ seller }) => {
               )}
             </div>
           </div>
-          
         </section>
-        
       ) : (
-        <p>Loading product details...</p>
+        <p className="loading-text">Loading product details...</p>
       )}
-
-      {/* Chat Section */}
       <section className="product-chat-con">
         {Questions.length > 0 &&
           Questions.slice(0, visibleQuestions).map((question, index) => (
@@ -420,7 +399,7 @@ const SellerContactDetails = ({ seller }) => {
                     question.ProductID &&
                     question.ProductID.SellerID &&
                     question.ProductID.SellerID.LogoImageFile
-                      ? `https://192.168.1.2:3000/uploads/${question.ProductID.SellerID.LogoImageFile}`
+                      ? `https://192.168.137.1:3000/uploads/${question.ProductID.SellerID.LogoImageFile}`
                       : "default-logo.png"
                   }
                   alt={

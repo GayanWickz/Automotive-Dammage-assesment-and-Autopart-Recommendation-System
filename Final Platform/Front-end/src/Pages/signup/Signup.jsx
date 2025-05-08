@@ -10,6 +10,7 @@ const Signup = () => {
     CustomerAddress: "",
     CustomerPhoneNumber: "",
     CustomerPassword: "",
+    CustomerPasswordConfirm: "",
   });
 
   const [errors, setErrors] = useState({});
@@ -46,6 +47,11 @@ const Signup = () => {
     } else if (formData.CustomerPassword.length < 6) {
       newErrors.CustomerPassword = "Password must be at least 6 characters.";
     }
+    if (!formData.CustomerPasswordConfirm.trim()) {
+      newErrors.CustomerPasswordConfirm = "Please re-enter your password.";
+    } else if (formData.CustomerPassword !== formData.CustomerPasswordConfirm) {
+      newErrors.CustomerPasswordConfirm = "Passwords do not match.";
+    }
     return newErrors;
   };
 
@@ -67,17 +73,21 @@ const Signup = () => {
 
     try {
       const response = await axios.post(
-        "https://192.168.1.2:3000/api/customerauthentication/customersignup",
-        formData
+        "https://192.168.137.1:3000/api/customerauthentication/customersignup",
+        {
+          CustomerName: formData.CustomerName,
+          CustomerEmail: formData.CustomerEmail,
+          CustomerAddress: formData.CustomerAddress,
+          CustomerPhoneNumber: formData.CustomerPhoneNumber,
+          CustomerPassword: formData.CustomerPassword,
+        }
       );
 
       if (response.data.success) {
-        // Store token in localStorage
         localStorage.setItem("token", response.data.token);
         localStorage.setItem("customerId", response.data.customerId);
         console.log("Login successful.");
         alert("Signup successful! Welcome!");
-
         navigate("/");
       } else {
         setApiError(response.data.message || "Signup failed.");
@@ -94,8 +104,7 @@ const Signup = () => {
       <div className="signup-con">
         <h3 className="text-hili">Sign up</h3>
         <p>
-          Welcome to our platform! Sign up to experience exclusive offers,
-          personalized recommendations, and easy access to all our services.
+          Welcome to our platform! Sign up and easy access to all our services.
         </p>
         <form className="gap" onSubmit={handleSubmit}>
           <div className="signup-input-box">
@@ -156,6 +165,18 @@ const Signup = () => {
             />
             {errors.CustomerPassword && (
               <p className="error">{errors.CustomerPassword}</p>
+            )}
+          </div>
+          <div className="signup-input-box">
+            <input
+              type="password"
+              name="CustomerPasswordConfirm"
+              placeholder="Re-enter Password"
+              value={formData.CustomerPasswordConfirm}
+              onChange={handleChange}
+            />
+            {errors.CustomerPasswordConfirm && (
+              <p className="error">{errors.CustomerPasswordConfirm}</p>
             )}
           </div>
           <button className="signup-button">Signup</button>

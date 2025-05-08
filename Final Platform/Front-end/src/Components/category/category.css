@@ -1,7 +1,7 @@
 .category-slider {
-  height: 60px;
+  /*height: 60px;
   background-color: #f0efeb;
-  border: 1px solid #c29d7b;
+  border: 1px solid #c29d7b;*/
   border-radius: 10px;
 }
 
@@ -13,8 +13,8 @@
 }
 
 .category-slider-item-img {
-  width: 40px;
-  height: 40px;
+  width: 90px;
+    height: 70px;
   -o-object-fit: cover;
      object-fit: cover;
   border-radius: 8px;
@@ -22,6 +22,11 @@
 
 .category-slider-item-dis {
   margin-left: 10px;
+}
+
+.slick-slide img {
+  margin-left: 20%;
+  
 }
 
 .p {
@@ -38,3 +43,4 @@
 .slick-slide > div {
   margin-inline: 10px;
 }/*# sourceMappingURL=category.css.map */
+

@@ -12,7 +12,7 @@ const Review = ({ sellerId }) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            await axios.post("https://192.168.1.2:3000/api/reviews", {
+            await axios.post("https://192.168.137.1:3000/api/reviews", {
                 sellerId,
                 rating,
                 comment,

@@ -15,7 +15,7 @@ const Seller_home = () => {
     const fetchProducts = async () => {
       try {
         const response = await fetch(
-          `https://192.168.1.2:3000/api/productssellerdisplay?sellerID=${sellerID}`
+          `https://192.168.137.1:3000/api/productssellerdisplay?sellerID=${sellerID}`
         );
         if (!response.ok) {
           throw new Error("Failed to fetch products");
@@ -36,7 +36,7 @@ const Seller_home = () => {
   const handleDelete = async (productId) => {
     try {
       const response = await fetch(
-        `https://192.168.1.2:3000/api/productsdelete/${productId}`,
+        `https://192.168.137.1:3000/api/productsdelete/${productId}`,
         {
           method: "DELETE",
         }
@@ -56,6 +56,13 @@ const Seller_home = () => {
     } catch (error) {
       console.error("Error deleting product:", error);
     }
+  };
+
+  // Helper function to format price with commas and .00
+  const formatPrice = (price) => {
+    return price
+      .toFixed(2)
+      .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   };
 
   return (
@@ -80,7 +87,7 @@ const Seller_home = () => {
                     <img
                       className="seller-home-table-image"
                       src={
-                        `https://192.168.1.2:3000/uploads/${product.ImageFiles[0]}` ||
+                        `https://192.168.137.1:3000/uploads/${product.ImageFiles[0]}` ||
                         "product.png"
                       }
                       alt={product.ProductName}
@@ -88,7 +95,7 @@ const Seller_home = () => {
                   </td>
                   <td data-label="Product Name">{product.ProductName}</td>
                   <td data-label="Quantity">{product.Quantity}</td>
-                  <td data-label="Price">RS.{product.Price}</td>
+                  <td data-label="Price">RS.{formatPrice(product.Price)}</td>
                   <td
                     data-label="Status"
                     className={`seller-home-${

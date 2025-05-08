@@ -17,11 +17,19 @@ const Account = () => {
   const [orders, setOrders] = useState([]);
   const navigate = useNavigate();
 
+  // Format currency with commas and two decimal places
+  const formatCurrency = (value) => {
+    return value.toLocaleString('en-US', {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    });
+  };
+
   useEffect(() => {
     const fetchCustomerDetails = async () => {
       try {
         const response = await axios.get(
-          `https://192.168.1.2:3000/api/customeraccount/${customerId}`
+          `https://192.168.137.1:3000/api/customeraccount/${customerId}`
         );
         setCustomer(response.data);
         setFormData({
@@ -44,9 +52,8 @@ const Account = () => {
     const fetchQuestions = async () => {
       try {
         const response = await axios.get(
-          `https://192.168.1.2:3000/api/customerreply/reply?customerId=${customerId}`
+          `https://192.168.137.1:3000/api/customerreply/reply?customerId=${customerId}`
         );
-        // Make sure to use response.data.questions if you changed the response format
         setQuestions(response.data.questions || response.data);
       } catch (error) {
         console.error("Error fetching questions:", error);
@@ -63,7 +70,7 @@ const Account = () => {
     const fetchOrders = async () => {
       try {
         const response = await axios.get(
-          `https://192.168.1.2:3000/api/customerorder/orders?customerId=${customerId}`
+          `https://192.168.137.1:3000/api/customerorder/orders?customerId=${customerId}`
         );
         setOrders(response.data);
       } catch (error) {
@@ -86,7 +93,7 @@ const Account = () => {
   const handleUpdate = async () => {
     try {
       const response = await axios.put(
-        `https://192.168.1.2:3000/api/customeraccount/${customerId}`,
+        `https://192.168.137.1:3000/api/customeraccount/${customerId}`,
         formData
       );
       setCustomer(response.data);
@@ -100,7 +107,7 @@ const Account = () => {
     if (window.confirm("Are you sure you want to delete your account? This action cannot be undone.")) {
       try {
         await axios.delete(
-          `https://192.168.1.2:3000/api/customeraccount/${customerId}`
+          `https://192.168.137.1:3000/api/customeraccount/${customerId}`
         );
         localStorage.removeItem("token");
         localStorage.removeItem("customerId");
@@ -114,7 +121,7 @@ const Account = () => {
   const handleDeleteQuestion = async (questionId) => {
     try {
       const response = await axios.delete(
-        `https://192.168.1.2:3000/api/customerdeletereply/${questionId}`
+        `https://192.168.137.1:3000/api/customerdeletereply/${questionId}`
       );
 
       if (response.data.success) {
@@ -134,11 +141,11 @@ const Account = () => {
   };
 
   if (!customer) {
-    return <p>Loading customer details...</p>;
+    return <p className="loading-text">Loading customer details...</p>;
   }
 
   return (
-    <div>
+    <div className="account-page">
       <div className="customer-profile-con">
         <img className="customer-profile-image" src="user-logo.png" alt="Profile" />
         <div className="customer-profile-detail-con">
@@ -196,10 +203,6 @@ const Account = () => {
           ) : (
             <>
               <div className="customer-profile-detail">
-                <h5 className="customer-profile-topic">Customer ID:</h5>
-                <p className="customer-profile-p">{customer._id}</p>
-              </div>
-              <div className="customer-profile-detail">
                 <h5 className="customer-profile-topic">Customer Name:</h5>
                 <p className="customer-profile-p">{customer.CustomerName}</p>
               </div>
@@ -233,7 +236,6 @@ const Account = () => {
         <table className="new-customer-order-tbl">
           <thead>
             <tr>
-              <th>Order ID</th>
               <th>Product Name</th>
               <th>Quantity</th>
               <th>Price</th>
@@ -243,10 +245,9 @@ const Account = () => {
           <tbody>
             {orders.map((order) => (
               <tr key={order._id}>
-                <td data-label="Order ID">{order.orderId}</td>
                 <td data-label="Product Name">{order.productId?.ProductName}</td>
                 <td data-label="Quantity">{order.quantity}</td>
-                <td data-label="Price">{order.price}</td>
+                <td data-label="Price">Rs. {formatCurrency(order.price)}</td>
                 <td
                   data-label="Status"
                   className={`new-order-${order.status.toLowerCase()}`}
@@ -269,7 +270,7 @@ const Account = () => {
                 <th>Product Name</th>
                 <th>Question</th>
                 <th>Answer</th>
-                <th></th>
+                <th>Action</th>
               </tr>
             </thead>
             <tbody>
@@ -280,7 +281,7 @@ const Account = () => {
                       className="customer-chat-table-image"
                       src={
                         question.ProductID?.ImageFiles?.[0]
-                          ? `https://192.168.1.2:3000/uploads/${question.ProductID.ImageFiles[0]}`
+                          ? `https://192.168.137.1:3000/uploads/${question.ProductID.ImageFiles[0]}`
                           : "1.jpg" // Fallback image
                       }
                       alt="product"

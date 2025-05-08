@@ -9,7 +9,7 @@ const Delivered = () => {
       const sellerId = localStorage.getItem("sellerId");
       try {
         const response = await fetch(
-          `https://192.168.1.2:3000/api/orderdeliveredsellerdisplay/${sellerId}`
+          `https://192.168.137.1:3000/api/orderdeliveredsellerdisplay/${sellerId}`
         );
         const data = await response.json();
         if (data.success) {
@@ -32,7 +32,7 @@ const Delivered = () => {
           <table className="delivered-tbl">
             <thead>
               <tr>
-                <th>Order ID</th>
+              
                 <th>Product Name</th>
                 <th>Quantity</th>
                 <th>Price</th>
@@ -44,7 +44,7 @@ const Delivered = () => {
             <tbody>
               {orders.map((order) => (
                 <tr key={order._id}>
-                  <td data-label="Order ID">{order.orderId}</td>
+                 
                   <td data-label="Product Name">
                     {order.productId?.ProductName}
                   </td>

@@ -12,7 +12,7 @@ const Summary = () => {
       try {
         // Fetch all seller orders
         const response = await fetch(
-          `https://192.168.1.2:3000/api/ordernewsellerdisplay/${sellerId}`
+          `https://192.168.137.1:3000/api/ordernewsellerdisplay/${sellerId}`
         );
         const data = await response.json();
 

@@ -19,7 +19,7 @@ const Hot = () => {
     const fetchProducts = async () => {
       try {
         const response = await axios.get(
-          `https://192.168.1.2:3000/api/productsdisplayhot${
+          `https://192.168.137.1:3000/api/productsdisplayhot${
             selectedCategory ? `?category=${selectedCategory}` : ""
           }`
         );
@@ -67,7 +67,7 @@ const Hot = () => {
               <div className="card-brand">
                 {product.SellerID && product.SellerID.LogoImageFile ? (
                   <img
-                    src={`https://192.168.1.2:3000/uploads/${product.SellerID.LogoImageFile}`}
+                    src={`https://192.168.137.1:3000/uploads/${product.SellerID.LogoImageFile}`}
                     alt={product.SellerID.SellerName || "Brand"}
                   />
                 ) : (
@@ -79,7 +79,7 @@ const Hot = () => {
               </div>
               <div className="card-image">
               <img
-                src={`https://192.168.1.2:3000/uploads/${product.ImageFiles[0]}`}
+                src={`https://192.168.137.1:3000/uploads/${product.ImageFiles[0]}`}
                 alt={product.ProductName}
               />
               </div>

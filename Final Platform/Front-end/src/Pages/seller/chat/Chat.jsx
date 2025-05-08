@@ -16,7 +16,7 @@ const Chat = () => {
     const fetchQuestions = async () => {
       try {
         const response = await axios.get(
-          `https://192.168.1.2:3000/api/productsreplyquestions?sellerId=${sellerId}`
+          `https://192.168.137.1:3000/api/productsreplyquestions?sellerId=${sellerId}`
         );
         setQuestions(response.data);
       } catch (error) {
@@ -33,7 +33,7 @@ const Chat = () => {
   const handleUpdateAnswer = async (answer) => {
     try {
       await axios.put(
-        `https://192.168.1.2:3000/api/productsreplyquestions/${selectedQuestion._id}`,
+        `https://192.168.137.1:3000/api/productsreplyquestions/${selectedQuestion._id}`,
         {
           answer,
         }
@@ -75,7 +75,7 @@ const Chat = () => {
                     {question.ProductID?.ImageFiles?.length > 0 && (
                       <img
                         className="seller-chat-table-image"
-                        src={`https://192.168.1.2:3000/uploads/${question.ProductID.ImageFiles[0]}`}
+                        src={`https://192.168.137.1:3000/uploads/${question.ProductID.ImageFiles[0]}`}
                         alt={question.ProductID.ProductName || "Product Image"}
                         onError={(e) => {
                           e.target.onerror = null;

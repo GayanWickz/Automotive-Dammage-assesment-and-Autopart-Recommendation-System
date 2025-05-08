@@ -66,13 +66,15 @@
 }
 
 .new-order-shipped {
-  background-color: lightskyblue;
+  background-color: rgb(87, 2, 2);
 }
 
 .new-order-processing {
-  background-color: lightcoral;
+  background-color: #867e08;
 }
-
+.new-order-delivered {
+  background-color: #0a6d0a;
+}
 @media (max-width: 768px) {
   .new-order-tbl thead {
     display: none;

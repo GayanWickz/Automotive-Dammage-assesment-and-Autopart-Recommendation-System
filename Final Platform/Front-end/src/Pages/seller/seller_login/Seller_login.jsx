@@ -8,10 +8,11 @@ const Seller_login = () => {
     SellerEmail: "",
     SellerPassword: "",
   });
-
+  const [forgotPasswordEmail, setForgotPasswordEmail] = useState("");
   const [errors, setErrors] = useState({});
   const [apiError, setApiError] = useState("");
-
+  const [showForgotPassword, setShowForgotPassword] = useState(false);
+  const [forgotPasswordMessage, setForgotPasswordMessage] = useState("");
   const navigate = useNavigate();
 
   const validate = () => {
@@ -50,18 +51,15 @@ const Seller_login = () => {
 
     try {
       const response = await axios.post(
-        "https://192.168.1.2:3000/api/sellerauthentication/sellerlogin",
+        "https://192.168.137.1:3000/api/sellerauthentication/sellerlogin",
         formData
       );
 
       if (response.data.success) {
-        // Store token in localStorage
         localStorage.setItem("sellertoken", response.data.token);
         localStorage.setItem("sellerId", response.data.sellerId);
         console.log("Login successful:", response.data);
         alert("Welcome back!");
-
-        // Redirect to seller home page
         navigate("/Seller_home");
       } else {
         setApiError(response.data.message || "Login failed.");
@@ -79,44 +77,107 @@ const Seller_login = () => {
     }
   };
 
+  const handleForgotPassword = async (e) => {
+    e.preventDefault();
+    if (!forgotPasswordEmail.trim() || !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(forgotPasswordEmail)) {
+      setErrors({ forgotPasswordEmail: "Valid email is required." });
+      return;
+    }
+
+    try {
+      const response = await axios.post(
+        "https://192.168.137.1:3000/api/sellerauthentication/forgot-password",
+        { SellerEmail: forgotPasswordEmail }
+      );
+
+      if (response.data.success) {
+        setForgotPasswordMessage("A password reset link has been sent to your email.");
+        setErrors({});
+      } else {
+        setErrors({ forgotPasswordEmail: response.data.message || "Failed to send reset email." });
+      }
+    } catch (error) {
+      console.error("Error during forgot password:", error);
+      setErrors({ forgotPasswordEmail: error.response?.data?.message || "Failed to send reset email." });
+    }
+  };
+
   return (
-    <div className="seller-login-mains">
-      {/* Seller login section */}
-      <div className="seller-login-cons">
+    <div className="seller-login-main">
+      <div className="seller-login-con">
         <h3 className="text-hili">Seller Login</h3>
-        <form className="gap" onSubmit={handleSubmit}>
-          <div className="seller-login-input-box">
-            <input
-              type="text"
-              name="SellerEmail"
-              placeholder="Company email"
-              value={formData.SellerEmail}
-              onChange={handleChange}
-            />
-            {errors.SellerEmail && (
-              <p className="error">{errors.SellerEmail}</p>
-            )}
+        <p>Welcome back! Log in to access all our services.</p>
+        {!showForgotPassword ? (
+          <>
+            <form className="gap" onSubmit={handleSubmit}>
+              <div className="login-input-box">
+                <input
+                  type="text"
+                  name="SellerEmail"
+                  placeholder="Company email"
+                  value={formData.SellerEmail}
+                  onChange={handleChange}
+                />
+                {errors.SellerEmail && (
+                  <p className="error">{errors.SellerEmail}</p>
+                )}
+              </div>
+              <div className="login-input-box">
+                <input
+                  type="password"
+                  name="SellerPassword"
+                  placeholder="Password"
+                  value={formData.SellerPassword}
+                  onChange={handleChange}
+                />
+                {errors.SellerPassword && (
+                  <p className="error">{errors.SellerPassword}</p>
+                )}
+              </div>
+              {apiError && <p className="error">{apiError}</p>}
+              <button className="login-button" type="submit">
+                Login
+              </button>
+            </form>
+            <p
+              className="gap back-to-login"
+              onClick={() => setShowForgotPassword(true)}
+            >
+              Forgot Password?
+            </p>
+            <Link to="/Seller_signup">
+              <p className="gap">Don't have an account? Sign up</p>
+            </Link>
+          </>
+        ) : (
+          <div className="forgot-password-form">
+            <h3 className="text-hili">Reset Password</h3>
+            <p>Enter your email to receive a password reset link.</p>
+            <form className="gap" onSubmit={handleForgotPassword}>
+              <div className="login-input-box">
+                <input
+                  type="email"
+                  placeholder="Company email"
+                  value={forgotPasswordEmail}
+                  onChange={(e) => setForgotPasswordEmail(e.target.value)}
+                />
+                {errors.forgotPasswordEmail && (
+                  <p className="error">{errors.forgotPasswordEmail}</p>
+                )}
+              </div>
+              {forgotPasswordMessage && (
+                <p style={{ color: "green" }}>{forgotPasswordMessage}</p>
+              )}
+              <button className="login-button">Send Reset Link</button>
+            </form>
+            <p
+              className="gap back-to-login"
+              onClick={() => setShowForgotPassword(false)}
+            >
+              Back to Login
+            </p>
           </div>
-          <div className="seller-login-input-box">
-            <input
-              type="password"
-              name="SellerPassword"
-              placeholder="Password"
-              value={formData.SellerPassword}
-              onChange={handleChange}
-            />
-            {errors.SellerPassword && (
-              <p className="error">{errors.SellerPassword}</p>
-            )}
-          </div>
-          {apiError && <p className="error">{apiError}</p>}
-          <button className="seller-login-buttons" type="submit">
-            Login
-          </button>
-        </form>
-        <Link to="/Seller_signup">
-          <p className="gap">Don't have an account? Sign up</p>
-        </Link>
+        )}
       </div>
     </div>
   );

@@ -1,3 +1,10 @@
+.account-page {
+  background-color: #0f0f0f;
+  padding: 20px;
+  font-family: 'Montserrat', sans-serif;
+  color: #e5e5e5;
+}
+
 .customer-profile-con {
   margin-top: 60px;
   width: 78%;
@@ -5,13 +12,17 @@
   display: flex;
   justify-content: space-around;
   flex-wrap: wrap;
+  background: rgba(0, 0, 0, 0.7);
+  border-radius: 12px;
+  border: 1px solid #333;
+  padding: 20px;
 }
 
 .customer-profile-image {
   width: 250px;
   height: 250px;
   border-radius: 10px;
-  border: 1px solid #873e23;
+  border: 1px solid #00d4ff;
   object-fit: cover;
 }
 
@@ -29,12 +40,13 @@
 }
 
 .customer-profile-topic {
-  color: #873e23;
+  color: #00d4ff;
 }
 
 .customer-profile-p {
   opacity: 0.6;
   transition: opacity 300ms ease-out;
+  color: #e5e5e5;
 }
 
 .customer-profile-p:hover {
@@ -48,46 +60,46 @@
 .profile-delete-btn {
   padding: 0.8rem 1.2rem;
   font-size: 16px;
-  font-weight: bold;
+  font-weight: 600;
   border-radius: 5px;
   cursor: pointer;
-  transition: background-color 0.3s ease-in-out;
+  transition: transform 0.2s ease;
 }
 
 .profile-edit-btn {
-  background-color: #4caf50;
-  color: white;
+  background-color: #00d4ff;
+  color: #0f0f0f;
 }
 
 .profile-edit-btn:hover {
-  background-color: #45a049;
+  transform: scale(1.05);
 }
 
 .profile-save-btn {
-  background-color: #4caf50;
-  color: white;
+  background-color: #00d4ff;
+  color: #0f0f0f;
 }
 
 .profile-save-btn:hover {
-  background-color: #45a049;
+  transform: scale(1.05);
 }
 
 .profile-cancel-btn {
   background-color: #f44336;
-  color: white;
+  color: #fff;
 }
 
 .profile-cancel-btn:hover {
-  background-color: #d32f2f;
+  transform: scale(1.05);
 }
 
 .profile-delete-btn {
   background-color: #f44336;
-  color: white;
+  color: #fff;
 }
 
 .profile-delete-btn:hover {
-  background-color: #d32f2f;
+  transform: scale(1.05);
 }
 
 .profile-button-container {
@@ -101,12 +113,15 @@
 .new-customer-order-container {
   width: 90%;
   margin-top: 100px;
-  background: #fff;
+  background: rgba(0, 0, 0, 0.7);
   margin-inline: auto;
+  border-radius: 12px;
+  border: 1px solid #333;
+  padding: 20px;
 }
 
 .customer-chat-head {
-  color: #873e23;
+  color: #00d4ff;
   margin-bottom: 20px;
 }
 
@@ -118,8 +133,8 @@
 
 .customer-chat-tbl thead,
 .new-customer-order-tbl thead {
-  background: #251a14;
-  color: #fff;
+  background: #1e1e1e;
+  color: #e5e5e5;
 }
 
 .customer-chat-tbl th,
@@ -129,7 +144,7 @@
   font-size: 15px;
   padding: 0.8rem;
   text-align: center;
-  border: 1px solid #aab7b8;
+  border: 1px solid #444;
 }
 
 .customer-chat-table-image,
@@ -142,13 +157,13 @@
 
 .customer-chat-tbl tr:nth-child(even),
 .new-customer-order-tbl tr:nth-child(even) {
-  background: #f0efeb;
+  background: #222;
   transition: background-color 0.3s ease-in;
 }
 
 .customer-chat-tbl tbody tr:hover,
 .new-customer-order-tbl tbody tr:hover {
-  background-color: #ddd;
+  background-color: #333;
 }
 
 .wish-btn.trash {
@@ -167,18 +182,45 @@
 
 .customer-chat-qa {
   word-wrap: break-word;
+  color: #e5e5e5;
 }
 
 .new-order-processing {
-  background-color: lightcoral;
+  background-color: #d46409;
+  color: #000000;
 }
 
 .new-order-shipped {
-  background-color: lightskyblue;
+  background-color: #2a505f;
+  color: #fff;
+}
+.new-order-delivered {
+  background-color: #0a6d0a;
+}
+.pending {
+  background-color: #180536;
+  color: #0f0f0f;
 }
 
-.pending {
-  background-color: yellow;
+.loading-text {
+  font-size: 1.2rem;
+  color: #e5e5e5;
+  text-align: center;
+  margin-top: 2rem;
+}
+
+.edit-input {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid #444;
+  color: #e5e5e5;
+  padding: 0.5rem;
+  border-radius: 5px;
+  font-family: 'Montserrat', sans-serif;
+}
+
+.edit-input:focus {
+  outline: none;
+  box-shadow: 0 0 8px rgba(0, 150, 255, 0.3);
 }
 
 @media (max-width: 1170px) {
@@ -229,5 +271,6 @@
     padding-left: 1rem;
     font-weight: bold;
     text-align: left;
+    color: #00d4ff;
   }
 }

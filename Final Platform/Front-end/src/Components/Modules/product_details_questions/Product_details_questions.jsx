@@ -20,7 +20,7 @@ export const Questionsm = ({ onSubmit, onCancel, closeModal, productId }) => {
     }
     try {
       await axios.post(
-        "https://192.168.1.2:3000/api/productsaskquestions/askquestionsadd",
+        "https://192.168.137.1:3000/api/productsaskquestions/askquestionsadd",
         {
           CustomerID: customerId,
           ProductID: productId,

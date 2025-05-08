@@ -20,20 +20,16 @@ const Cart = () => {
 
     const fetchCartItems = async () => {
       try {
-        const apiUrl = `https://192.168.1.2:3000/api/pendingcart/pendingcartfetch/${customerId}`;
+        const apiUrl = `https://192.168.137.1:3000/api/pendingcart/pendingcartfetch/${customerId}`;
         const response = await fetch(apiUrl);
         const data = await response.json();
 
         if (response.ok) {
           console.log("Fetched cart data:", data);
-
-          // Store item IDs in local storage
           const cartItemsWithIds = data.cartItems.map((item) => ({
             ...item,
             ItemID: item._id,
           }));
-
-          // Save the items in local storage
           localStorage.setItem("cart", JSON.stringify(cartItemsWithIds));
           setCartItems(data.cartItems);
         } else {
@@ -52,21 +48,18 @@ const Cart = () => {
 
   const handleRemoveItem = async (itemId) => {
     try {
-      const apiUrl = `https://192.168.1.2:3000/api/pendingcart/pendingcartremove/${itemId}`;
+      const apiUrl = `https://192.168.137.1:3000/api/pendingcart/pendingcartremove/${itemId}`;
       const response = await fetch(apiUrl, {
         method: "DELETE",
       });
 
       if (response.ok) {
-        // Remove the item from local storage, after removal
         const cartItems = JSON.parse(localStorage.getItem("cart")) || [];
         const updatedCart = cartItems.filter(
           (cartItem) => cartItem.ItemID !== itemId
         );
         localStorage.setItem("cart", JSON.stringify(updatedCart));
-
         setCartItems(updatedCart);
-
         alert("Item removed successfully.");
       } else {
         const errorData = await response.json();
@@ -79,19 +72,16 @@ const Cart = () => {
     }
   };
 
-  // Cart clear
   const handleClearCart = async () => {
     const customerId = localStorage.getItem("customerId");
-
     if (!customerId) {
       alert("No customer ID found. Please log in.");
       return;
     }
 
     try {
-      const apiUrl = `https://192.168.1.2:3000/api/pendingcart/pendingcartclear/${customerId}`;
+      const apiUrl = `https://192.168.137.1:3000/api/pendingcart/pendingcartclear/${customerId}`;
       const response = await fetch(apiUrl, { method: "DELETE" });
-
       if (response.ok) {
         setCartItems([]);
         localStorage.removeItem("cart");
@@ -114,15 +104,24 @@ const Cart = () => {
       }
       return item;
     });
-
     setCartItems(updatedCartItems);
     localStorage.setItem("cart", JSON.stringify(updatedCartItems));
   };
 
+  const formatCurrency = (value) => {
+    return value.toLocaleString('en-US', {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    });
+  };
+
   const getTotal = () => {
-    return cartItems
-      .reduce((total, item) => total + item.Price * item.Quantity, 0)
-      .toFixed(2);
+    const total = cartItems.reduce((total, item) => total + item.Price * item.Quantity, 0);
+    return total;
+  };
+
+  const getFormattedTotal = () => {
+    return formatCurrency(getTotal());
   };
 
   const handleCheckout = async () => {
@@ -140,7 +139,7 @@ const Cart = () => {
                 purchase_units: [
                   {
                     amount: {
-                      value: getTotal(),
+                      value: getTotal().toFixed(2), 
                     },
                   },
                 ],
@@ -166,7 +165,7 @@ const Cart = () => {
                 };
 
                 const response = await fetch(
-                  "https://192.168.1.2:3000/api/orders/orderdatasend/",
+                  "https://192.168.137.1:3000/api/orders/orderdatasend/",
                   {
                     method: "POST",
                     headers: {
@@ -178,16 +177,13 @@ const Cart = () => {
 
                 if (response.ok) {
                   alert("Order placed successfully!");
-
-                  // Clear the pending cart from the database
                   const customerId = localStorage.getItem("customerId");
                   const clearCartResponse = await fetch(
-                    `https://192.168.1.2:3000/api/pendingcart/pendingcartclear/${customerId}`,
+                    `https://192.168.137.1:3000/api/pendingcart/pendingcartclear/${customerId}`,
                     { method: "DELETE" }
                   );
 
                   if (clearCartResponse.ok) {
-                    // Clear local state and local storage
                     setCartItems([]);
                     localStorage.removeItem("cart");
                     alert("Checkout successful, Email has been sent to you!");
@@ -202,18 +198,17 @@ const Cart = () => {
                     );
                   }
 
-                  // Send confirmation email (if necessary)
                   const customerEmail = localStorage.getItem("customerEmail");
                   if (customerEmail) {
                     const emailResponse = await fetch(
-                      "https://192.168.1.2:3000/api/email/send-email",
+                      "https://192.168.137.1:3000/api/email/send-email",
                       {
                         method: "POST",
                         headers: { "Content-Type": "application/json" },
                         body: JSON.stringify({
                           to: customerEmail,
                           subject: "Order Confirmation",
-                          text: `Dear customer, your payment of $${getTotal()} has been successfully received. Thank you for shopping with us!`,
+                          text: `Dear customer, your payment of Rs.${getFormattedTotal()} has been successfully received. Thank you for shopping with us!`,
                         }),
                       }
                     );
@@ -237,7 +232,6 @@ const Cart = () => {
                 alert("An error occurred during payment processing.");
               }
             },
-
             onError: (err) => {
               console.error("PayPal Checkout error:", err);
             },
@@ -249,32 +243,33 @@ const Cart = () => {
   };
 
   if (loading) {
-    return <p>Loading...</p>;
+    return <p className="loading-text">Loading...</p>;
   }
 
   if (error) {
-    return <p>{error}</p>;
+    return <p className="error-text">{error}</p>;
   }
 
   return (
-    <div className="container">
-      <h1>Shopping Cart</h1>
+    <div className="cart-container">
+      <h1 className="cart-title">Shopping Cart</h1>
       <div className="cart">
         <div className="products">
           {cartItems.length === 0 ? (
-            <p>No items in the cart.</p>
+            <p className="empty-cart">No items in the cart.</p>
           ) : (
             cartItems.map((item) => (
               <div className="product" key={item._id}>
                 <img
-                  src={`https://192.168.1.2:3000/uploads/${item.ImageFile}`}
+                  src={`https://192.168.137.1:3000/uploads/${item.ImageFile}`}
                   alt={item.ProductName}
+                  className="product-image"
                 />
                 <div className="product-info">
                   <h3 className="product-name">{item.ProductName}</h3>
-                  <p className="product-price">$. {item.Price}</p>
-                  <p className="product-quantity">
-                    Quantity:
+                  <p className="product-price">Rs. {formatCurrency(item.Price)}</p>
+                  <div className="product-quantity">
+                    <label>Quantity:</label>
                     <input
                       type="number"
                       value={item.Quantity}
@@ -284,45 +279,45 @@ const Cart = () => {
                         handleQuantityChange(item._id, Number(e.target.value))
                       }
                     />
-                  </p>
+                  </div>
                   <p className="product-total">
-                    Item Total: $. {(item.Price * item.Quantity).toFixed(2)}
+                    Item Total: Rs. {formatCurrency(item.Price * item.Quantity)}
                   </p>
-                  <p
+                  <button
                     className="product-remove"
                     onClick={() => handleRemoveItem(item._id)}
                   >
                     Remove
-                  </p>
+                  </button>
                 </div>
               </div>
             ))
           )}
         </div>
-
         <div className="cart-total">
           <p>
-            <span className="my">Total Price</span>
-            <span className="my1">$. {getTotal()}</span>
+            <span>Total Price</span>
+            <span>Rs. {getFormattedTotal()}</span>
           </p>
           <p>
-            <span className="my">Number of Items</span>
-            <span className="my1">
+            <span>Number of Items</span>
+            <span>
               {cartItems.reduce((total, item) => total + item.Quantity, 0)}
             </span>
           </p>
           <p>
-            <span className="my">You Save</span>
-            <span className="my1">$. 0.00</span>
+            <span>You Save</span>
+            <span>Rs. {formatCurrency(0)}</span>
           </p>
-          <button onClick={handleCheckout} style={{ marginBottom: "20px" }}>
+          <button className="checkout-button" onClick={handleCheckout}>
             Proceed to Checkout
           </button>
           {showPayPal && <div id="paypal-button-container"></div>}
         </div>
       </div>
-
-      <button onClick={handleClearCart}>Clear Cart</button>
+      <button className="clear-cart-button" onClick={handleClearCart}>
+        Clear Cart
+      </button>
     </div>
   );
 };

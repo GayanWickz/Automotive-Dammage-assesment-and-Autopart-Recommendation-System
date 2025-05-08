@@ -1,7 +1,10 @@
-/* General Styles */
+* {
+  box-sizing: border-box;
+}
+
 .Navbar-cat {
-  background-color: #ffffff;
-  box-shadow: 0px -3px 9px 9px rgb(241 185 101);
+  background: linear-gradient(180deg, #1c1c1c, #0f0f0f);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
   padding: 10px 20px;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
     Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
@@ -22,12 +25,20 @@
 .hedder-cat {
   font-size: 24px;
   font-weight: bold;
-  color: #0071e3;
+  color: #e5e5e5;
   transition: color 0.3s ease;
+  display: flex;
+  align-items: center;
+}
+
+.hedder-cat img {
+  height: 60px;
+  width: auto;
+  margin-right: 10px;
 }
 
 .hedder-cat:hover {
-  color: #005bb5;
+  color: #00d4ff;
 }
 
 .hedder-right-cat {
@@ -56,10 +67,11 @@
   position: absolute;
   top: 100%;
   right: 0;
-  background-color: #ffffff;
-  border: 1px solid #e0e0e0;
+  background: rgba(30, 30, 30, 0.95);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
   padding: 10px;
   display: flex;
   flex-direction: column;
@@ -78,7 +90,7 @@
 
 .dropdown-menu-cat a,
 .dropdown-menu-cat button {
-  color: #1d1d1f;
+  color: #e5e5e5;
   text-decoration: none;
   font-size: 14px;
   background: none;
@@ -92,20 +104,19 @@
 
 .dropdown-menu-cat a:hover,
 .dropdown-menu-cat button:hover {
-  background-color: #f5f5f7;
-  color: #0071e3;
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #00d4ff;
 }
 
-.dropdown-menu-cat button.logout-button {
+.dropdown-menu-cat button.logout-button-cat {
   color: #ff3b30;
 }
 
-.dropdown-menu-cat button.logout-button:hover {
+.dropdown-menu-cat button.logout-button-cat:hover {
   background-color: #ff3b30;
   color: #ffffff;
 }
 
-/* Navbar Menu Section */
 .manu-section-cat {
   max-width: 1200px;
   margin: 0 auto;
@@ -127,7 +138,7 @@
   display: block;
   width: 100%;
   height: 3px;
-  background-color: #1d1d1f;
+  background-color: #e5e5e5;
   transition: all 0.3s ease;
 }
 
@@ -159,7 +170,7 @@
 
 .menu-items-cat a {
   text-decoration: none;
-  color: #1d1d1f;
+  color: #e5e5e5;
   font-size: 16px;
   font-weight: 500;
   padding: 8px 12px;
@@ -169,17 +180,16 @@
 }
 
 .menu-items-cat a:hover {
-  background-color: #f5f5f7;
-  color: #0071e3;
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #00d4ff;
 }
 
 .menu-items-cat .active a {
-  background-color: #b58635;
+  background-color: #2c2c2c;
   color: #ffffff;
   font-weight: bold;
 }
 
-/* Responsive Styles */
 @media (max-width: 768px) {
   .menu-responsive-cat {
     display: flex;
@@ -190,12 +200,13 @@
     top: 70px;
     left: 0;
     right: 0;
-    background-color: #ffffff;
+    background: rgba(30, 30, 30, 0.95);
+    backdrop-filter: blur(10px);
     flex-direction: column;
     align-items: center;
     gap: 10px;
     padding: 20px 0;
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
     transform: translateY(-100%);
     opacity: 0;
     pointer-events: none;
@@ -224,15 +235,24 @@
     display: none;
     box-shadow: none;
     border: none;
+    background: rgba(30, 30, 30, 0.95);
+    backdrop-filter: blur(10px);
   }
 
   .dropdown-container-cat:hover .dropdown-menu-cat,
   .dropdown-container-cat:focus-within .dropdown-menu-cat {
     display: flex;
   }
+
+  .hedder-cat {
+    font-size: 20px;
+  }
+
+  .hedder-cat img {
+    height: 40px;
+  }
 }
 
-/* Mobile Landscape Optimization */
 @media (max-width: 768px) and (orientation: landscape) {
   .menu-items-cat {
     max-height: 60vh;

@@ -90,7 +90,7 @@ const EditProduct = () => {
 
     try {
       const response = await axios.put(
-        `https://192.168.1.2:3000/api/ecommerceproductedit/update/${productId}`,
+        `https://192.168.137.1:3000/api/ecommerceproductedit/update/${productId}`,
         formDataToSend,
         { headers: { "Content-Type": "multipart/form-data" } }
       );
@@ -199,14 +199,7 @@ const EditProduct = () => {
             />
             {errors.quantity && <p className="error">{errors.quantity}</p>}
           </div>
-          <div className="product-add-input-box-select">
-            <Select
-              placeholder="For who"
-              options={Gender}
-              value={formData.gender}
-              onChange={(selected) => handleSelectChange("gender", selected)}
-            />
-          </div>
+          
           {errors.gender && <p className="error">{errors.gender}</p>}
           <div className="product-add-input-box-select">
             <Select

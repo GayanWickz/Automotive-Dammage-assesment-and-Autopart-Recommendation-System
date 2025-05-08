@@ -18,9 +18,9 @@ const Admin = () => {
     const fetchStats = async () => {
       try {
         const [sellersRes, customersRes, ordersRes] = await Promise.all([
-          axios.get("https://192.168.1.2:3000/api/sellers/total-sellers"), 
-          axios.get("https://192.168.1.2:3000/api/customerauthentication/total-customers"),
-          axios.get("https://192.168.1.2:3000/api/orders/total-orders"),
+          axios.get("https://192.168.137.1:3000/api/sellers/total-sellers"), 
+          axios.get("https://192.168.137.1:3000/api/customerauthentication/total-customers"),
+          axios.get("https://192.168.137.1:3000/api/orders/total-orders"),
         ]);
 
         setStats({

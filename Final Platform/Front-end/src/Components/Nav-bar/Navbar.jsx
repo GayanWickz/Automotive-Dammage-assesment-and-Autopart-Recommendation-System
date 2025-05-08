@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import "./Nav-bar.css";
-import "../../Pages/search_page/search_page.css"; 
+import "../../Pages/search_page/search_page.css";
 
 const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [dropdownVisible, setDropdownVisible] = useState(false);
-  const [showCarSearch, setShowCarSearch] = useState(false); // State to control CarSearch visibility
+  const [showCarSearch, setShowCarSearch] = useState(false); 
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -30,48 +30,63 @@ const Navbar = () => {
   };
 
   const toggleCarSearch = () => {
-    setShowCarSearch(!showCarSearch); // Toggle CarSearch visibility
+    setShowCarSearch(!showCarSearch); 
   };
-
-   
-
-
-
 
   return (
     <div className="navbar">
-      {/* Navbar top section */}
+    
       <div className="navbar-top">
-        <div className="navbar-brand">AutoPart Genius</div>
+     
+        <a href="https://192.168.137.1:5173/" className="navbar-brand-link">
+        <div className="navbar-brand">
+  <img src="https://192.168.137.1:5173\public\logoo-removebg-preview.png" alt="AutoPart Genius Logo" className="navbar-logo" />
+</div>
+        </a>
         {/* Navbar menu section */}
-      <nav className="navbar-menu">
-        <button
-          className="menu-toggle"
-          onClick={() => setMenuOpen(!menuOpen)}
-        >
-          <span></span>
-          <span></span>
-          <span></span>
-        </button>
-        <ul className={`menu-items ${menuOpen ? "open" : ""}`}>
-          <li>
-            <NavLink to="/">HOME</NavLink>
-          </li>
-         
-          <li>
-            <NavLink to="/Offers">OFFERS</NavLink>
-          </li>
-          <li>
-            <NavLink to="/Hot">HOT</NavLink>
-          </li>
-          
-        </ul>
-      </nav>
-      <div>
-        
-      </div>
+        <nav className="navbar-menu">
+          <button
+            className="menu-toggle"
+            onClick={() => setMenuOpen(!menuOpen)}
+          >
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
+          <ul className={`menu-items ${menuOpen ? "open" : ""}`}>
+            <li>
+              <NavLink to="/" className="menu-item-with-icon">
+                
+                HOME
+              </NavLink>
+            </li>
+            <li>
+              <NavLink to="/Offers" className="menu-item-with-icon">
+                
+                OFFERS
+              </NavLink>
+            </li>
+            <li>
+              <NavLink to="/Hot" className="menu-item-with-icon">
+              
+                HOT
+              </NavLink>
+            </li>
+            <li>
+              <NavLink to="/Wish_list" className="menu-item-with-icon">
+                <img src="wish-list.png" alt="Wishlist" className="menu-icon" />
+                WISHLIST
+              </NavLink>
+            </li>
+            <li>
+              <NavLink to="/Cart" className="menu-item-with-icon">
+                <img src="shopping-cart.png" alt="Cart" className="menu-icon" />
+                CART
+              </NavLink>
+            </li>
+          </ul>
+        </nav>
         <div className="navbar-icons">
-           
           <div className="dropdown-container">
             <button className="icon-button" onClick={toggleDropdown}>
               <img src="user-account.png" alt="Account" />
@@ -90,39 +105,21 @@ const Navbar = () => {
                 ) : (
                   <>
                     <Link to="/Login" onClick={() => setDropdownVisible(false)}>
-                      Customer Account
+                      Customer
                     </Link>
                     <Link
                       to="/Seller_login"
                       onClick={() => setDropdownVisible(false)}
                     >
-                      Seller Account
+                      Seller
                     </Link>
                   </>
                 )}
               </div>
             )}
           </div>
-          <Link to="/Wish_list">
-            <button className="icon-button">
-              <img src="wish-list.png" alt="Wishlist" />
-            </button>
-          </Link>
-          <Link to="/Cart">
-            <button className="icon-button">
-              <img src="shopping-cart.png" alt="Cart" />
-            </button>
-          </Link>
-        
         </div>
-        
       </div>
-
-      
-    
-        
-      
-    
     </div>
   );
 };

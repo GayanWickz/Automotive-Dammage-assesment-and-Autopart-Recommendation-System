@@ -44,19 +44,19 @@ const Seller_nav = () => {
       set_menu_open(false);
     }
   };
+
   const handleLogoClick = () => {
-    navigate("../"); // Navigate to the home page 
+    navigate("../");
   };
+
   return (
     <div className="Navbar-cat">
-      {/* Header Section */}
       <div className="hedder-section-cat">
-      <div className="hedder-cat" onClick={handleLogoClick} style={{ cursor: 'pointer' }}>
-          AutoPart Genius
+        <div className="hedder-cat" onClick={handleLogoClick} style={{ cursor: 'pointer' }}>
+          <img src="https://192.168.137.1:5173/public/logoo-removebg-preview.png" alt="AutoPart Genius Logo" />
+      
         </div>
-        
         <div className="hedder-right-cat">
-          {/* Mobile Menu Button */}
           <div 
             className={`menu-responsive-cat ${menuOpen ? "open" : ""}`} 
             onClick={() => set_menu_open(!menuOpen)}
@@ -65,8 +65,6 @@ const Seller_nav = () => {
             <span></span>
             <span></span>
           </div>
-          
-          {/* Account Dropdown */}
           <div className="dropdown-container-cat" onClick={toggleDropdown}>
             <img
               className="hedder-button-cat"
@@ -117,8 +115,6 @@ const Seller_nav = () => {
           </div>
         </div>
       </div>
-
-      {/* Navigation Menu */}
       <nav className="manu-section-cat">
         <ul className={`menu-items-cat ${menuOpen ? "open" : ""}`}>
           <li

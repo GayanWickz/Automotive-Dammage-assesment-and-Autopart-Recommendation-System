@@ -1,61 +1,81 @@
-.seller-login-mains {
-  position: fixed;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-image: linear-gradient(135deg, #4d173c, #3c7a88); /* Diagonal gradient */
-  background-repeat: no-repeat;
-  background-size: cover;
+* {
+  box-sizing: border-box;
 }
 
-.seller-login-cons {
-  width: 380px;
-  height: 400px;
-  padding: 20px;
-  margin-inline: auto;
-  align-items: center;
-  justify-content: space-between;
-  text-align: center;
-  border: 2px solid #ffffff;
-  border-radius: 5px;
-  backdrop-filter: blur(10px);
+.seller-login-main {
+  position: fixed !important;
+  left: 0 !important;
+  top: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  background-color: #000000 !important;
+  background-image: url('https://192.168.137.1:5173/public/admin-bg.jpg') !important;
+  background-size: cover !important;
+  background-position: center !important;
+  background-repeat: no-repeat !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
 }
 
-.seller-login-right-side {
-  width: 75%;
-  margin-left: 75px;
+p {
+  color: #ffffff;
+  font-size: 1.2rem;
+  margin-top: 10px;
+}
+
+a {
+  color: #ffffff;
+  text-decoration: none;
+}
+
+p a:hover {
+  text-decoration: underline;
+}
+
+.text-hili {
+  background-color: #000000;
+  color: #ffffff;
+  padding: 5px 10px;
+  border-radius: 3px;
+}
+
+.seller-login-con {
+  width: 400px;
+  max-width: 90%;
+  padding: 20px !important;
+  margin-inline: auto !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  text-align: center !important;
+  border: 1px solid #ffffff !important;
+  border-radius: 5px !important;
+  background-color: rgba(0, 0, 0, 0.7) !important;
 }
 
 .gap {
   margin-top: 20px;
 }
 
-.seller-login-input-box {
-  height: 40px;
+.login-input-box {
+  height: 44px;
   width: 100%;
   margin: 12px 0;
   border: 1px solid #c29d7b;
   border-radius: 5px;
-  margin-top: 30px;
 }
 
-.seller-login-input-box input,
-.seller-login-input-box textarea {
+.login-input-box input {
   height: 100%;
   width: 100%;
   border: none;
   outline: none;
   font-size: 15px;
-  border-radius: 6px;
+  border-radius: 5px;
   padding: 0 15px;
-  resize: none;
 }
 
-.seller-login-buttons {
+.login-button {
   margin-top: 22px;
   width: 100%;
   height: 45px;
@@ -63,8 +83,13 @@
   border: 1px solid #873e23;
   font-size: 15px;
   color: white;
-  background-color: #d31212;
+  background-color: transparent;
   transition: 300ms ease-out;
+}
+
+.login-button:hover {
+  background-color: white;
+  color: #873e23;
 }
 
 .error {
@@ -73,20 +98,54 @@
   margin-top: 5px;
 }
 
-.seller-login-buttons:hover {
-  background-color: white;
-  color: #873e23;
-}
-
-.seller-signup-button:hover {
-  background-color: white;
-  color: #d31212;
+.back-to-login {
+  cursor: pointer;
+  color: #c29d7b;
+  text-decoration: underline;
 }
 
 @media (max-width: 820px) {
   .seller-login-con {
     width: 90%;
-    flex-direction: column-reverse;
-    margin-top: 50px;
+    margin-top: 20%;
+    padding: 15px;
   }
-}/*# sourceMappingURL=seller_login.css.map */
+
+  p {
+    font-size: 1rem;
+  }
+
+  .login-button {
+    height: 40px;
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .seller-login-con {
+    padding: 10px;
+  }
+
+  .login-input-box {
+    height: 40px;
+  }
+
+  .login-input-box input {
+    font-size: 14px;
+    padding: 0 10px;
+  }
+
+  .login-button {
+    height: 38px;
+    font-size: 13px;
+  }
+
+  p {
+    font-size: 0.9rem;
+  }
+
+  .text-hili {
+    font-size: 1.1rem;
+    padding: 4px 8px;
+  }
+}

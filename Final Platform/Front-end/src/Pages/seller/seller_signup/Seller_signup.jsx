@@ -4,7 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./seller_signup.css";
 
-const libraries = ["places"]; 
+const libraries = ["places"];
 
 const Seller_signup = () => {
   const [formData, setFormData] = useState({
@@ -14,35 +14,33 @@ const Seller_signup = () => {
     phoneNumber: "",
     description: "",
     password: "",
+    passwordConfirm: "",
     file: null,
-    location: null, // Store selected location (latitude and longitude)
+    location: null,
   });
 
   const [errors, setErrors] = useState({});
   const [filePreview, setFilePreview] = useState(null);
-  const navigate = useNavigate();
   const [apiError, setApiError] = useState("");
+  const navigate = useNavigate();
 
-  // Google Maps configuration
   const { isLoaded, loadError } = useLoadScript({
-    googleMapsApiKey: "AIzaSyD8R5Zu_Z9S9xv4LL3RqQdrM_2DCbY2WS4", 
+    googleMapsApiKey: "AIzaSyD8R5Zu_Z9S9xv4LL3RqQdrM_2DCbY2WS4",
     libraries,
   });
 
   const [markerPosition, setMarkerPosition] = useState(null);
 
-  // Handle map click to set marker position
   const onMapClick = useCallback((event) => {
     const lat = event.latLng.lat();
     const lng = event.latLng.lng();
     setMarkerPosition({ lat, lng });
     setFormData((prev) => ({
       ...prev,
-      location: { lat, lng }, // Update form data with selected location
+      location: { lat, lng },
     }));
   }, []);
 
-  // Validate form data
   const validate = () => {
     const newErrors = {};
     if (!formData.companyName.trim())
@@ -73,6 +71,11 @@ const Seller_signup = () => {
     } else if (formData.password.length < 6) {
       newErrors.password = "Password must be at least 6 characters.";
     }
+    if (!formData.passwordConfirm.trim()) {
+      newErrors.passwordConfirm = "Please re-enter your password.";
+    } else if (formData.password !== formData.passwordConfirm) {
+      newErrors.passwordConfirm = "Passwords do not match.";
+    }
     if (!formData.file) newErrors.file = "Please upload a company logo.";
     return newErrors;
   };
@@ -80,12 +83,13 @@ const Seller_signup = () => {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
+    setApiError("");
   };
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     setFormData((prev) => ({ ...prev, file }));
-    setFilePreview(URL.createObjectURL(file));
+    setFilePreview(file ? URL.createObjectURL(file) : null);
   };
 
   const handleSubmit = async (e) => {
@@ -94,24 +98,24 @@ const Seller_signup = () => {
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
       return;
-    } else {
-      setErrors({});
     }
 
-    // Prepare the form data for submission
+    setErrors({});
+    setApiError("");
+
     const formDataToSubmit = new FormData();
     formDataToSubmit.append("SellerName", formData.companyName);
     formDataToSubmit.append("SellerEmail", formData.companyEmail);
     formDataToSubmit.append("SellerAddress", formData.companyAddress);
     formDataToSubmit.append("SellerPhoneNumber", formData.phoneNumber);
-    formDataToSubmit.append("SellerLocation", JSON.stringify(formData.location)); // Send location as JSON
+    formDataToSubmit.append("SellerLocation", JSON.stringify(formData.location));
     formDataToSubmit.append("SellerDescription", formData.description);
     formDataToSubmit.append("SellerPassword", formData.password);
     formDataToSubmit.append("logoimage", formData.file);
 
     try {
       const response = await axios.post(
-        "https://192.168.1.2:3000/api/sellerauthentication/sellersignup",
+        "https://192.168.137.1:3000/api/sellerauthentication/sellersignup",
         formDataToSubmit,
         {
           headers: {
@@ -143,8 +147,9 @@ const Seller_signup = () => {
           Ready to sell your products and reach a wider audience? Sign up to
           become a seller and start listing your items today!
         </p>
+        {apiError && <p className="error">{apiError}</p>}
         <form className="gap" onSubmit={handleSubmit}>
-          <div className="seller-signup-input-box">
+          <div className="login-input-box">
             <input
               type="text"
               name="companyName"
@@ -156,7 +161,7 @@ const Seller_signup = () => {
               <p className="error">{errors.companyName}</p>
             )}
           </div>
-          <div className="seller-signup-input-box">
+          <div className="login-input-box">
             <input
               type="text"
               name="companyEmail"
@@ -168,7 +173,7 @@ const Seller_signup = () => {
               <p className="error">{errors.companyEmail}</p>
             )}
           </div>
-          <div className="seller-signup-input-box">
+          <div className="login-input-box">
             <input
               type="text"
               name="companyAddress"
@@ -180,9 +185,9 @@ const Seller_signup = () => {
               <p className="error">{errors.companyAddress}</p>
             )}
           </div>
-          <div className="seller-signup-input-box">
+          <div className="login-input-box">
             <input
-              type="number"
+              type="tel"
               name="phoneNumber"
               placeholder="Valid telephone number"
               value={formData.phoneNumber}
@@ -192,21 +197,22 @@ const Seller_signup = () => {
               <p className="error">{errors.phoneNumber}</p>
             )}
           </div>
-          <div className="seller-signup-map">
+          <div className="google-map-container">
             <GoogleMap
-              mapContainerStyle={{ width: "100%", height: "300px" }}
+              mapContainerClassName="google-map-container"
+              mapContainerStyle={{ width: "100%", height: "100%" }}
               zoom={10}
-              center={{ lat: 6.9271, lng: 79.8612 }} // Default center (e.g., Colombo, Sri Lanka)
+              center={{ lat: 6.9271, lng: 79.8612 }}
               onClick={onMapClick}
             >
               {markerPosition && <Marker position={markerPosition} />}
             </GoogleMap>
             {errors.location && <p className="error">{errors.location}</p>}
           </div>
-          <div className="seller-signup-input-box seller-signup-message-box">
-            <input
+          <div className="login-input-box login-message-box">
+            <textarea
               name="description"
-              placeholder="Enter a small description ( Limit to 100 characters )"
+              placeholder="Enter a small description (Limit to 100 characters)"
               value={formData.description}
               onChange={handleChange}
             />
@@ -217,7 +223,7 @@ const Seller_signup = () => {
               <p className="error">{errors.description}</p>
             )}
           </div>
-          <div className="seller-signup-input-box margin-top-pass">
+          <div className="login-input-box">
             <input
               type="password"
               name="password"
@@ -227,29 +233,40 @@ const Seller_signup = () => {
             />
             {errors.password && <p className="error">{errors.password}</p>}
           </div>
-          <div className="seller-signup-input-box-image">
+          <div className="login-input-box">
             <input
-              className="seller-signup-input-box-image-input"
+              type="password"
+              name="passwordConfirm"
+              placeholder="Re-enter Password"
+              value={formData.passwordConfirm}
+              onChange={handleChange}
+            />
+            {errors.passwordConfirm && (
+              <p className="error">{errors.passwordConfirm}</p>
+            )}
+          </div>
+          <div className="login-input-box-image">
+            <input
               type="file"
+              accept="image/*"
               onChange={handleFileChange}
             />
             {filePreview && (
               <img
-                className="seller-signup-input-image"
+                className="login-input-image"
                 src={filePreview}
                 alt="Preview"
               />
             )}
             {errors.file && <p className="error">{errors.file}</p>}
           </div>
-          <button className="seller-signup-buttons" type="submit">
+          <button className="login-button" type="submit">
             Signup
           </button>
         </form>
         <Link to="/Seller_login">
-          <p className="gap">You already have an account? Login</p>
+          <p className="gap">Already have an account? Login</p>
         </Link>
-        {apiError && <p className="error">{apiError}</p>}
       </div>
     </div>
   );

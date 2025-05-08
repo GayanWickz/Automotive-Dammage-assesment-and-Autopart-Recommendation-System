@@ -12,7 +12,7 @@ const New_orders = () => {
     const sellerId = localStorage.getItem("sellerId");
     try {
       const response = await fetch(
-        `https://192.168.1.2:3000/api/ordernewsellerdisplay/${sellerId}`
+        `https://192.168.137.1:3000/api/ordernewsellerdisplay/${sellerId}`
       );
       const data = await response.json();
       if (data.success) {
@@ -39,7 +39,7 @@ const New_orders = () => {
   const handleStatusUpdate = async (status) => {
     try {
       const response = await fetch(
-        `https://192.168.1.2:3000/api/ordernewsellerdisplay/${selectedOrder}/status`,
+        `https://192.168.137.1:3000/api/ordernewsellerdisplay/${selectedOrder}/status`,
         {
           method: "PATCH",
           headers: { "Content-Type": "application/json" },
@@ -65,13 +65,19 @@ const New_orders = () => {
     setModalOpen(false);
   };
 
+  // Helper function to format price with commas and .00
+  const formatPrice = (price) => {
+    return price
+      .toFixed(2)
+      .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  };
+
   return (
     <div>
       <div className="new-order-container">
         <table className="new-order-tbl">
           <thead>
             <tr>
-              <th>Order ID</th>
               <th>Product Name</th>
               <th>Quantity</th>
               <th>Price</th>
@@ -84,12 +90,11 @@ const New_orders = () => {
           <tbody>
             {orders.map((order) => (
               <tr key={order._id}>
-                <td data-label="Order ID">{order.orderId}</td>
                 <td data-label="Product Name">
                   {order.productId?.ProductName}
                 </td>
                 <td data-label="Quantity">{order.quantity}</td>
-                <td data-label="Price">{order.price}</td>
+                <td data-label="Price">{formatPrice(order.price)}</td>
                 <td data-label="Customer Address">
                   {order.customerId?.CustomerAddress}
                 </td>
