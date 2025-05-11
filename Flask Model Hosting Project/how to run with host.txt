@@ -1,0 +1,1 @@
+(.venv) E:\My Software\final_project\flaskProject2>python app.py
