@@ -90,7 +90,7 @@ const EditProduct = () => {
 
     try {
       const response = await axios.put(
-        `https://192.168.137.1:3000/api/ecommerceproductedit/update/${productId}`,
+        `/api/ecommerceproductedit/update/${productId}`,
         formDataToSend,
         { headers: { "Content-Type": "multipart/form-data" } }
       );

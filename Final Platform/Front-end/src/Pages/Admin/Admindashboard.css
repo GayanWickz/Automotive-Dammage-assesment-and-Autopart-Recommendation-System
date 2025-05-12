@@ -52,7 +52,7 @@
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    background-image: url("https://192.168.1.2:5173/public/admin-bg.jpg"); 
+    background-image: url("/public/admin-bg.jpg"); 
     background-size: cover; 
     background-repeat: no-repeat; 
     background-position: center; 

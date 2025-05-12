@@ -19,7 +19,7 @@ const Offers = () => {
     const fetchProducts = async () => {
       try {
         const response = await axios.get(
-          `https://192.168.137.1:3000/api/productsdisplayoffers${
+          `/api/productsdisplayoffers${
             selectedCategory ? `?category=${selectedCategory}` : ""
           }`
         );
@@ -48,7 +48,7 @@ const Offers = () => {
   const handleCardClick = (productId) => {
     navigate(`/Product_details`, { state: { productId } });
   };
-
+  const BACKEND_URL = `https://${window.location.hostname}:3000`;
   return (
     <div>
 
@@ -65,7 +65,7 @@ const Offers = () => {
             <div className="card-brand">
               <div>
                 <img
-                  src={`https://192.168.137.1:3000/uploads/${product.SellerID.LogoImageFile}`}
+                  src={`${BACKEND_URL}/uploads/${product.SellerID.LogoImageFile}`}
                   alt={product.brand}
                 />
               </div>
@@ -75,7 +75,7 @@ const Offers = () => {
             </div>
             <div className="card-image">
               <img
-                src={`https://192.168.137.1:3000/uploads/${product.ImageFiles[0]}`}
+                src={`${BACKEND_URL}/uploads/${product.ImageFiles[0]}`}
                 alt={product.ProductName}
               />
             </div>

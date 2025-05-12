@@ -257,6 +257,7 @@
 .price-filter input[type="range"],
 .distance-filter input[type="range"] {
   -webkit-appearance: none;
+  appearance: none;
   width: 100%;
   height: 6px;
   background-color: #00aaff 50%;

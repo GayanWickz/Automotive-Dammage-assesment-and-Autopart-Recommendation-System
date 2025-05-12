@@ -112,9 +112,11 @@
 
 .dropdown-menu button.logout-button {
   padding: unset;
-  color: #ff3b30;
+  
 }
-
+.dropdown-menu button.logout-button:hover {
+  background-color: transparent !important; 
+}
 /* Navbar Menu Section */
 .navbar-menu {
   max-width: 1200px;

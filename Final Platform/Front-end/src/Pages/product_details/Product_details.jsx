@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { createPortal } from "react-dom";
 import axios from "axios";
-import { io } from "socket.io-client";
 import "./product_details.css";
 import { Questionsm } from "../../Components/Modules/product_details_questions/Product_details_questions";
 import Review from "../../Pages/review/review";
@@ -56,7 +55,7 @@ const Product_details = () => {
   const fetchProductDetails = async () => {
     try {
       const response = await axios.get(
-        `https://192.168.137.1:3000/api/productsdetailsdisplay/${productId}`
+        `/api/productsdetailsdisplay/${productId}`
       );
       setProduct(response.data);
     } catch (error) {
@@ -76,7 +75,7 @@ const Product_details = () => {
     }
     try {
       const response = await axios.post(
-        "https://192.168.137.1:3000/api/pendingcart/pendingcartadd",
+        "/api/pendingcart/pendingcartadd",
         {
           CustomerID: customerId,
           ProductID: productId,
@@ -104,7 +103,7 @@ const Product_details = () => {
     }
     try {
       const response = await axios.post(
-        "https://192.168.137.1:3000/api/wishlist/wishlistadd",
+        "/api/wishlist/wishlistadd",
         {
           CustomerID: customerId,
           ProductID: productId,
@@ -125,7 +124,7 @@ const Product_details = () => {
   const fetchQuestions = async () => {
     try {
       const response = await axios.get(
-        `https://192.168.137.1:3000/api/productsshowquestions/${productId}`
+        `/api/productsshowquestions/${productId}`
       );
       setQuestions(response.data);
     } catch (error) {
@@ -133,26 +132,7 @@ const Product_details = () => {
     }
   };
 
-  const [socket, setSocket] = useState(null);
-  useEffect(() => {
-    const newSocket = io("http://localhost:3000");
-    newSocket.on("connect", () => {
-      console.log("Connected to WebSocket server");
-    });
-    newSocket.on("new-question", (data) => {
-      if (data?.productId === productId) {
-        setQuestions((prevQuestions) => [data.question, ...prevQuestions]);
-      }
-    });
-    newSocket.on("disconnect", () => {
-      console.log("Disconnected from WebSocket server");
-    });
-    setSocket(newSocket);
-    return () => {
-      newSocket.removeAllListeners();
-      newSocket.close();
-    };
-  }, [productId]);
+
 
   useEffect(() => {
     if (productId) {
@@ -283,7 +263,8 @@ const Product_details = () => {
       </div>
     </div>
   );
-
+  const BACKEND_URL = `https://${window.location.hostname}:3000`;
+  
   return (
     <div className="product-details-page">
       {product ? (
@@ -295,7 +276,7 @@ const Product_details = () => {
               </button>
               <img
                 className="product-details-image"
-                src={`https://192.168.137.1:3000/uploads/${product.ImageFiles[currentImageIndex]}`}
+                src={`${BACKEND_URL}/uploads/${product.ImageFiles[currentImageIndex]}`}
                 alt={product.ProductName || "Product Image"}
               />
               <button className="slider-button right" onClick={handleNextImage}>
@@ -399,7 +380,7 @@ const Product_details = () => {
                     question.ProductID &&
                     question.ProductID.SellerID &&
                     question.ProductID.SellerID.LogoImageFile
-                      ? `https://192.168.137.1:3000/uploads/${question.ProductID.SellerID.LogoImageFile}`
+                      ? `${BACKEND_URL}/uploads/${question.ProductID.SellerID.LogoImageFile}`
                       : "default-logo.png"
                   }
                   alt={

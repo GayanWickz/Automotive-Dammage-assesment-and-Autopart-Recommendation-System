@@ -53,7 +53,7 @@ const Contact = () => {
     try {
       // Sending the form data to the backend
       const response = await axios.post(
-        "https://192.168.137.1:3000/api/admincontact/admincsendmessege",
+        "/api/admincontact/admincsendmessege",
         dataToSend
       );
       if (response.data.success) {
@@ -83,25 +83,25 @@ const Contact = () => {
           <div className="contact-address details">
             <img className="contact-icon" src="pngtree-flat-red-location-sign-png-image_6553065.png" alt="" />
             <h4>Address</h4>
-            <p>69/4 Main Street</p>
-            <p>Malabe,Colombo 04</p>
+            <p className="abc">69/4 Main Street</p>
+            <p className="abc">Malabe,Colombo 04</p>
           </div>
           <div className="contact-phone details">
             <img className="contact-icon" src="hd-green-round-circle-phone-icon-png-701751695059810shy4vi4gck.png" alt="" />
             <h4>Phone</h4>
-            <p>+94 (77) 252-2466</p>
-            <p>+94 (11) 765-4321</p>
+            <p className="abc">+94 (77) 252-2466</p>
+            <p className="abc">+94 (11) 765-4321</p>
           </div>
           <div className="contact-email details">
             <img className="contact-icon" src="hd-letter-email-round-blue-icon-transparent-png-70175169503463700jpjirgdw.png" alt="" />
             <h4>E-mail</h4>
           
-            <p>autopartgenius@gmail.com</p>
+            <p className="abc">autopartgenius@gmail.com</p>
           </div>
         </div>
         <div className="contact-right-side">
           <h3 className="text-hili">Send us a message</h3>
-          <p>
+          <p className="abc">
             If you have any questions or need further information, feel free to
             reach out to us. We are happy to assist you with any inquiries or
             support requests you may have. Our team is dedicated to providing

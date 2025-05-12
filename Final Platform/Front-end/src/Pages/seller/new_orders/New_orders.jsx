@@ -12,7 +12,7 @@ const New_orders = () => {
     const sellerId = localStorage.getItem("sellerId");
     try {
       const response = await fetch(
-        `https://192.168.137.1:3000/api/ordernewsellerdisplay/${sellerId}`
+        `/api/ordernewsellerdisplay/${sellerId}`
       );
       const data = await response.json();
       if (data.success) {
@@ -39,7 +39,7 @@ const New_orders = () => {
   const handleStatusUpdate = async (status) => {
     try {
       const response = await fetch(
-        `https://192.168.137.1:3000/api/ordernewsellerdisplay/${selectedOrder}/status`,
+        `/api/ordernewsellerdisplay/${selectedOrder}/status`,
         {
           method: "PATCH",
           headers: { "Content-Type": "application/json" },

@@ -8,7 +8,7 @@ const CustomerOrder = () => {
 
   useEffect(() => {
     axios
-      .get("https://192.168.137.1:3000/api/orders/")
+      .get("/api/orders/")
       .then((response) => {
         setOrders(response.data);
         setLoading(false);

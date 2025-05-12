@@ -14,7 +14,7 @@ const Admincontact = () => {
 
   useEffect(() => {
     axios
-      .get("https://192.168.137.1:3000/api/Admincontact")
+      .get("/api/Admincontact")
       .then((response) => {
         setContacts(response.data);
         setLoading(false);
@@ -28,7 +28,7 @@ const Admincontact = () => {
 
   const deletecontact = (id) => {
     axios
-      .delete(`https://192.168.137.1:3000/api/Admincontact/${id}`)
+      .delete(`/api/Admincontact/${id}`)
       .then((response) => {
         console.log("Contacts detail deleted successfully", response);
         setContacts(contacts.filter((contact) => contact._id !== id));
@@ -55,7 +55,7 @@ const Admincontact = () => {
 
  };
   
-      await axios.post("https://192.168.137.1:3000/api/email/send-email", emailPayload);
+      await axios.post("/api/email/send-email", emailPayload);
       alert("Email sent successfully!");
       setShowPopup(false);
     } catch (error) {

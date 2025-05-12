@@ -8,7 +8,7 @@ const mapContainerStyle = {
   width: "100%",
   height: "400px",
 };
-
+    
 const defaultCenter = {
   lat: 0,
   lng: 0,
@@ -40,7 +40,7 @@ const Seller_profile = () => {
 
       try {
         const response = await axios.get(
-          `https://192.168.137.1:3000/api/selleraccount/${sellerId}`
+          `/api/selleraccount/${sellerId}`
         );
 
         console.log("API Response:", response.data); // Debug log
@@ -85,7 +85,7 @@ const Seller_profile = () => {
           console.warn("SellerLocation is undefined or null");
         }
 
-        console.log("Processed Location:", location); // Debug log
+        console.log("Processed Location:", location); 
 
         setEditData({
           SellerName: sellerData.SellerName || "",
@@ -211,7 +211,7 @@ const Seller_profile = () => {
 
     try {
       const response = await axios.put(
-        `https://192.168.137.1:3000/api/selleraccount/${sellerId}`,
+        `/api/selleraccount/${sellerId}`,
         formData,
         {
           headers: {
@@ -245,7 +245,7 @@ const Seller_profile = () => {
     ) {
       try {
         await axios.delete(
-          `https://192.168.137.1:3000/api/selleraccount/${sellerId}`
+          `/api/selleraccount/${sellerId}`
         );
         localStorage.removeItem("sellerId");
         navigate("/");
@@ -255,7 +255,7 @@ const Seller_profile = () => {
       }
     }
   };
-
+  const BACKEND_URL = `https://${window.location.hostname}:3000`;
   return (
     <div>
       {seller ? (
@@ -331,7 +331,7 @@ const Seller_profile = () => {
               {seller?.LogoImageFile ? (
                 <img
                   className="seller-profile-image"
-                  src={`https://192.168.137.1:3000/uploads/${seller.LogoImageFile}`}
+                  src={`${BACKEND_URL}/uploads/${seller.LogoImageFile}`}
                   alt={seller.LogoImageFile}
                 />
               ) : (

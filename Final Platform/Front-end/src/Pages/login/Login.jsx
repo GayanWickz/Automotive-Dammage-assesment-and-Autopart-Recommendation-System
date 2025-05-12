@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { GoogleLogin } from "@react-oauth/google";
 import "./login.css";
 
 const Login = () => {
@@ -50,7 +51,7 @@ const Login = () => {
 
     try {
       const response = await axios.post(
-        "https://192.168.137.1:3000/api/customerauthentication/customerlogin",
+        "/api/customerauthentication/customerlogin",
         formData
       );
 
@@ -70,9 +71,33 @@ const Login = () => {
     }
   };
 
-  const handleGoogleSignIn = () => {
-    // Placeholder for Google Sign-In logic
-    alert("Google Sign-In not implemented yet.");
+  const handleGoogleSignInSuccess = async (credentialResponse) => {
+    try {
+      const response = await axios.post(
+        "/api/customerauthentication/google-signin",
+        {
+          googleToken: credentialResponse.credential,
+        }
+      );
+
+      if (response.data.success) {
+        localStorage.setItem("token", response.data.token);
+        localStorage.setItem("customerId", response.data.customerId);
+        localStorage.setItem("customerEmail", response.data.customerEmail);
+        console.log("Google Sign-In successful");
+        alert("Welcome back!");
+        navigate("/");
+      } else {
+        setApiError(response.data.message || "Google Sign-In failed.");
+      }
+    } catch (error) {
+      console.error("Error during Google Sign-In:", error);
+      setApiError(error.response?.data?.message || "Google Sign-In failed.");
+    }
+  };
+
+  const handleGoogleSignInError = () => {
+    setApiError("Google Sign-In was unsuccessful. Please try again.");
   };
 
   const handleForgotPassword = async (e) => {
@@ -84,7 +109,7 @@ const Login = () => {
 
     try {
       const response = await axios.post(
-        "https://192.168.137.1:3000/api/customerauthentication/forgot-password",
+        "/api/customerauthentication/forgot-password",
         { CustomerEmail: forgotPasswordEmail }
       );
 
@@ -133,16 +158,15 @@ const Login = () => {
                 )}
               </div>
               {apiError && <p className="error">{apiError}</p>}
-              <button className phương pháp="login-button">Login</button>
+              <button className="login-button">Login</button>
             </form>
-            <button className="google-signin-button" onClick={handleGoogleSignIn}>
-              <img
-                src="https://www.google.com/favicon.ico"
-                alt="Google logo"
-                className="google-logo"
+            <div className="google-signin-button">
+              <GoogleLogin
+                onSuccess={handleGoogleSignInSuccess}
+                onError={handleGoogleSignInError}
+                useOneTap
               />
-              Sign in with Google
-            </button>
+            </div>
             <p
               className="gap back-to-login"
               onClick={() => setShowForgotPassword(true)}

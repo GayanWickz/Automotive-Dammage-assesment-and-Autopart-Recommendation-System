@@ -33,7 +33,7 @@ const SellerResetPassword = () => {
 
     try {
       const response = await axios.post(
-        "https://192.168.137.1:3000/api/sellerauthentication/reset-password",
+        "/api/sellerauthentication/reset-password",
         { token, newPassword }
       );
 

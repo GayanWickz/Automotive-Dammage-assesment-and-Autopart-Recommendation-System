@@ -48,41 +48,44 @@ const Home = () => {
   const [aiError, setAiError] = useState("");
   const [activeHeroIndex, setActiveHeroIndex] = useState(0);
 
+  const BACKEND_URL = `https://${window.location.hostname}:3000`;
+  const Backend_url=`https://${window.location.hostname}:5000`;
+
   const handleAISearchClick = () => {
     setShowAISearchModal(true);
     setAiError("");
     setSelectedImage(null);
   };
 
-  const handleImageUpload = async () => {
-    if (!selectedImage) return;
+ const handleImageUpload = async () => {
+  if (!selectedImage) return;
 
-    const formData = new FormData();
-    formData.append("image", selectedImage);
+  const formData = new FormData();
+  formData.append("image", selectedImage);
 
-    try {
-      setUploading(true);
-      const response = await axios.post(
-        "https://192.168.137.1:5000/ai-search?image",
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
-
-      if (response.data.class) {
-        setSearchQuery(response.data.class);
-        setShowAISearchModal(false);
+  try {
+    setUploading(true);
+    const response = await axios.post(
+      `${Backend_url}/ai-search?image`,
+      formData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
       }
-    } catch (error) {
-      setAiError("Error analyzing image. Please try again.");
-      console.error("AI Search error:", error);
-    } finally {
-      setUploading(false);
+    );
+
+    if (response.data.class) {
+      setSearchQuery(response.data.class);
+      setShowAISearchModal(false);
     }
-  };
+  } catch (error) {
+    setAiError("Error analyzing image. Please try again.");
+    console.error("AI Search error:", error);
+  } finally {
+    setUploading(false);
+  }
+};
 
   const navigate = useNavigate();
 
@@ -118,7 +121,7 @@ const Home = () => {
     const fetchProducts = async () => {
       try {
         const response = await axios.get(
-          `https://192.168.137.1:3000/api/productsdisplay${
+          `/api/productsdisplay${
             selectedVehicleBrand ? `?vehicleBrand=${selectedVehicleBrand}` : ""
           }`
         );
@@ -146,7 +149,7 @@ const Home = () => {
         const endpoint = searchQuery.startsWith("PN-") ? "searchPartNumber" : "search";
 
         const response = await axios.get(
-          `https://192.168.137.1:3000/api/productssearch/${endpoint}`,
+          `/api/productssearch/${endpoint}`,
           {
             params: {
               query: searchQuery.startsWith("PN-") ? searchQuery.substring(3) : searchQuery,
@@ -171,7 +174,7 @@ const Home = () => {
           setProductsToFilter(response.data);
           if (response.data.length === 0) {
             const similarResponse = await axios.get(
-              `https://192.168.137.1:3000/api/productssearch/search`,
+              `/api/productssearch/search`,
               {
                 params: {
                   query: searchQuery,
@@ -254,36 +257,42 @@ const Home = () => {
   };
 
   const handleAdvancedSearch = async () => {
-    try {
-      const response = await axios.get(
-        `https://192.168.137.1:3000/api/productssearch/advanced-vehicle-search`,
-        {
-          params: {
-            make: vehicleMake,
-            model: vehicleModel,
-            year: modelYear,
-          },
-        }
-      );
-
-      const vehicleResults = response.data.filter(
-        (item) => item.ProductType === "Vehicle" && item.VehicleBrand && item.Year
-      );
-
-      setSearchResults(vehicleResults);
-      setProductsToFilter(vehicleResults);
-
-      if (vehicleResults.length === 0) {
-        alert("No matching vehicles found. Try expanding your search criteria.");
-      }
-    } catch (error) {
-      console.error("Advanced search error:", error);
-      alert("Error performing search. Please try again.");
-      setSearchResults([]);
-      setProductsToFilter([]);
+  try {
+    // Validate inputs
+    if (!vehicleMake && !vehicleModel && !modelYear) {
+      alert("Please provide at least one search criterion (make, model, or year).");
+      return;
     }
-  };
 
+    const response = await axios.get(
+      `/api/productssearch/advanced-vehicle-search`,
+      {
+        params: {
+          make: vehicleMake || undefined, // Avoid sending empty strings
+          model: vehicleModel || undefined,
+          year: modelYear || undefined,
+        },
+      }
+    );
+
+    // Filter results to ensure they are vehicles with required fields
+    const vehicleResults = response.data.filter(
+      (item) => item.ProductType === "Vehicle"
+    );
+
+    setSearchResults(vehicleResults);
+    setProductsToFilter(vehicleResults);
+
+    if (vehicleResults.length === 0) {
+      alert("No matching vehicles found. Try expanding your search criteria.");
+    }
+  } catch (error) {
+    console.error("Advanced search error:", error);
+    alert("Error performing search. Please try again.");
+    setSearchResults([]);
+    setProductsToFilter([]);
+  }
+};
   const heroContent = [
     {
       h4: "Auto Innovation Sale",
@@ -375,14 +384,14 @@ const Home = () => {
         <div className="product-card-brand">
           {product.SellerID?.LogoImageFile && (
             <img
-              src={`https://192.168.137.1:3000/uploads/${product.SellerID.LogoImageFile}`}
+              src={`${BACKEND_URL}/uploads/${product.SellerID.LogoImageFile}`}
               alt="brand"
               className="product-brand-logo"
             />
           )}
         </div>
         <img
-          src={`https://192.168.137.1:3000/uploads/${product.ImageFiles[0]}`}
+          src={`${BACKEND_URL}/uploads/${product.ImageFiles[0]}`}
           alt={product.ProductName}
           className="product-image"
         />

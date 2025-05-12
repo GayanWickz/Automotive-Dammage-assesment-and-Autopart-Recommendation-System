@@ -20,7 +20,7 @@ const Cart = () => {
 
     const fetchCartItems = async () => {
       try {
-        const apiUrl = `https://192.168.137.1:3000/api/pendingcart/pendingcartfetch/${customerId}`;
+        const apiUrl = `/api/pendingcart/pendingcartfetch/${customerId}`;
         const response = await fetch(apiUrl);
         const data = await response.json();
 
@@ -48,7 +48,7 @@ const Cart = () => {
 
   const handleRemoveItem = async (itemId) => {
     try {
-      const apiUrl = `https://192.168.137.1:3000/api/pendingcart/pendingcartremove/${itemId}`;
+      const apiUrl = `/api/pendingcart/pendingcartremove/${itemId}`;
       const response = await fetch(apiUrl, {
         method: "DELETE",
       });
@@ -80,7 +80,7 @@ const Cart = () => {
     }
 
     try {
-      const apiUrl = `https://192.168.137.1:3000/api/pendingcart/pendingcartclear/${customerId}`;
+      const apiUrl = `/api/pendingcart/pendingcartclear/${customerId}`;
       const response = await fetch(apiUrl, { method: "DELETE" });
       if (response.ok) {
         setCartItems([]);
@@ -165,7 +165,7 @@ const Cart = () => {
                 };
 
                 const response = await fetch(
-                  "https://192.168.137.1:3000/api/orders/orderdatasend/",
+                  "/api/orders/orderdatasend/",
                   {
                     method: "POST",
                     headers: {
@@ -179,7 +179,7 @@ const Cart = () => {
                   alert("Order placed successfully!");
                   const customerId = localStorage.getItem("customerId");
                   const clearCartResponse = await fetch(
-                    `https://192.168.137.1:3000/api/pendingcart/pendingcartclear/${customerId}`,
+                    `/api/pendingcart/pendingcartclear/${customerId}`,
                     { method: "DELETE" }
                   );
 
@@ -201,7 +201,7 @@ const Cart = () => {
                   const customerEmail = localStorage.getItem("customerEmail");
                   if (customerEmail) {
                     const emailResponse = await fetch(
-                      "https://192.168.137.1:3000/api/email/send-email",
+                      "/api/email/send-email",
                       {
                         method: "POST",
                         headers: { "Content-Type": "application/json" },
@@ -249,7 +249,8 @@ const Cart = () => {
   if (error) {
     return <p className="error-text">{error}</p>;
   }
-
+  
+  const BACKEND_URL = `https://${window.location.hostname}:3000`;
   return (
     <div className="cart-container">
       <h1 className="cart-title">Shopping Cart</h1>
@@ -261,7 +262,7 @@ const Cart = () => {
             cartItems.map((item) => (
               <div className="product" key={item._id}>
                 <img
-                  src={`https://192.168.137.1:3000/uploads/${item.ImageFile}`}
+                  src={`${BACKEND_URL}/uploads/${item.ImageFile}`}
                   alt={item.ProductName}
                   className="product-image"
                 />

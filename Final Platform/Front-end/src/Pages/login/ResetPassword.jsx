@@ -33,7 +33,7 @@ const ResetPassword = () => {
 
     try {
       const response = await axios.post(
-        "https://192.168.137.1:3000/api/customerauthentication/reset-password",
+        "/api/customerauthentication/reset-password",
         { token, newPassword }
       );
 

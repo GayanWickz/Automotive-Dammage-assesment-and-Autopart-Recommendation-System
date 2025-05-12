@@ -53,7 +53,7 @@ const Seller_nav = () => {
     <div className="Navbar-cat">
       <div className="hedder-section-cat">
         <div className="hedder-cat" onClick={handleLogoClick} style={{ cursor: 'pointer' }}>
-          <img src="https://192.168.137.1:5173/public/logoo-removebg-preview.png" alt="AutoPart Genius Logo" />
+          <img src="/public/logoo-removebg-preview.png" alt="AutoPart Genius Logo" />
       
         </div>
         <div className="hedder-right-cat">

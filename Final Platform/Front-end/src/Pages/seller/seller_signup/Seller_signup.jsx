@@ -115,7 +115,7 @@ const Seller_signup = () => {
 
     try {
       const response = await axios.post(
-        "https://192.168.137.1:3000/api/sellerauthentication/sellersignup",
+        "/api/sellerauthentication/sellersignup",
         formDataToSubmit,
         {
           headers: {

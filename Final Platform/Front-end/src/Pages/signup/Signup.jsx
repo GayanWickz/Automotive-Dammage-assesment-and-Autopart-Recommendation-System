@@ -73,7 +73,7 @@ const Signup = () => {
 
     try {
       const response = await axios.post(
-        "https://192.168.137.1:3000/api/customerauthentication/customersignup",
+        "/api/customerauthentication/customersignup",
         {
           CustomerName: formData.CustomerName,
           CustomerEmail: formData.CustomerEmail,

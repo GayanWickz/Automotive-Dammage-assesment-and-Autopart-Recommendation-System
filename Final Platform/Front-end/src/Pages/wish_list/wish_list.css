@@ -56,6 +56,7 @@
 }
 
 @media (max-width: 768px) {
+  
   .wish-tbl thead {
     display: none;
   }
@@ -88,3 +89,7 @@
     padding: 1rem;
   }
 }/*# sourceMappingURL=wish_list.css.map */
+
+
+
+

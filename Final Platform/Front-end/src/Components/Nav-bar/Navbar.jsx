@@ -32,15 +32,15 @@ const Navbar = () => {
   const toggleCarSearch = () => {
     setShowCarSearch(!showCarSearch); 
   };
-
+  const BACKEND_URL = `https://${window.location.hostname}`;
   return (
     <div className="navbar">
     
       <div className="navbar-top">
      
-        <a href="https://192.168.137.1:5173/" className="navbar-brand-link">
+        <a href="" className="navbar-brand-link">
         <div className="navbar-brand">
-  <img src="https://192.168.137.1:5173\public\logoo-removebg-preview.png" alt="AutoPart Genius Logo" className="navbar-logo" />
+  <img src="\public\logoo-removebg-preview.png" alt="AutoPart Genius Logo" className="navbar-logo" />
 </div>
         </a>
         {/* Navbar menu section */}

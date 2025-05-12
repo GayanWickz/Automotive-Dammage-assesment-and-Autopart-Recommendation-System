@@ -20,7 +20,7 @@ const Nefie = ({ origin, destination }) => {
           streetViewControl: false,
           mapTypeControl: false,
           fullscreenControl: false,
-          googleMapsApiKey: 'YOUR_GOOGLE_MAPS_API_KEY', // Insert your API key here
+          googleMapsApiKey: 'YOUR_GOOGLE_MAPS_API_KEY', 
         }}
       >
         <DirectionsService

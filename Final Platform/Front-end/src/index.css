@@ -13,8 +13,10 @@ a {
   text-decoration: none;
   color: inherit;
 }
+
 .App {
-  width: 80%;
+  
+  width: 100%;
   margin: auto;
 }
 h1 {
@@ -36,7 +38,5 @@ h5 {
   font-size: 17px;
   font-weight: 300;
 }
-p {
-  font-size: 15px;
-  font-weight: 300;
-}
+
+

@@ -51,7 +51,7 @@ const Seller_login = () => {
 
     try {
       const response = await axios.post(
-        "https://192.168.137.1:3000/api/sellerauthentication/sellerlogin",
+        "/api/sellerauthentication/sellerlogin",
         formData
       );
 
@@ -86,7 +86,7 @@ const Seller_login = () => {
 
     try {
       const response = await axios.post(
-        "https://192.168.137.1:3000/api/sellerauthentication/forgot-password",
+        "/api/sellerauthentication/forgot-password",
         { SellerEmail: forgotPasswordEmail }
       );
 

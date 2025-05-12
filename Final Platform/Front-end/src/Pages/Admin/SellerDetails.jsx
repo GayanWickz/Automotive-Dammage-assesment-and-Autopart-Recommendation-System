@@ -9,7 +9,7 @@ const SellerDetail = () => {
   useEffect(() => {
     // Fetch all seller authentication data from the backend
     axios
-      .get("https://192.168.137.1:3000/api/sellerauthentication")
+      .get("/api/sellerauthentication")
       .then((response) => {
         setSellers(response.data); 
         setLoading(false);
@@ -26,7 +26,7 @@ const SellerDetail = () => {
 
   const deleteSeller = (id) => {
     axios
-      .delete(`https://192.168.137.1:3000/api/sellerauthentication/${id}`)
+      .delete(`/sellerauthentication/${id}`)
       .then((response) => {
         console.log("Seller deleted successfully", response);
         setSellers(sellers.filter(seller => seller._id !== id));
@@ -38,7 +38,7 @@ const SellerDetail = () => {
 
   const updateSellerStatus = (id, status) => {
     axios
-      .put(`hhttps://192.168.137.1:3000/api/sellerauthentication/${id}`, { status })
+      .put(`/api/sellerauthentication/${id}`, { status })
       .then((response) => {
         setSellers(
           sellers.map((seller) =>
@@ -48,7 +48,8 @@ const SellerDetail = () => {
       })
       .catch((error) => console.error("Error updating seller status:", error));
   };
-
+  
+  const BACKEND_URL = `https://${window.location.hostname}:3000`;
   return (
     <div>
       
@@ -82,7 +83,7 @@ const SellerDetail = () => {
                   <td className="sadmin">{seller.Status}</td>
                   <td>
                     <img className="sadmin"
-                      src={`https://192.168.137.1:3000/uploads/${seller.LogoImageFile}`}
+                      src={`${BACKEND_URL}/uploads/${seller.LogoImageFile}`}
                       alt="Seller Logo"
                       width="50"
                       height="50"

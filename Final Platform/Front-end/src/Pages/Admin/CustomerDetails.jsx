@@ -9,7 +9,7 @@ const CustomerDetail = () => {
   useEffect(() => {
     // Fetch all Customer authentication data from the backend
     axios
-      .get("https://192.168.137.1:3000/api/customerauthentication")
+      .get("/api/customerauthentication")
       .then((response) => {
         setCustomers(response.data);
         setLoading(false);
@@ -27,7 +27,7 @@ const CustomerDetail = () => {
 
   const deletecustomer = (id) => {
     axios
-      .delete(`https://192.168.137.1:3000/api/customerauthentication/${id}`)
+      .delete(`/api/customerauthentication/${id}`)
       .then((response) => {
         console.log("Customer deleted successfully", response);
         setCustomers(customers.filter((customer) => customer._id !== id));

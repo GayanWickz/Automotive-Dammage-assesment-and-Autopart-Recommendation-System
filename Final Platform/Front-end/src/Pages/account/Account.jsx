@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./account.css";
 
+const BACKEND_URL = `https://${window.location.hostname}:3000`;
 const Account = () => {
   const customerId = localStorage.getItem("customerId");
   const [customer, setCustomer] = useState(null);
@@ -29,7 +30,7 @@ const Account = () => {
     const fetchCustomerDetails = async () => {
       try {
         const response = await axios.get(
-          `https://192.168.137.1:3000/api/customeraccount/${customerId}`
+          `/api/customeraccount/${customerId}`
         );
         setCustomer(response.data);
         setFormData({
@@ -52,7 +53,7 @@ const Account = () => {
     const fetchQuestions = async () => {
       try {
         const response = await axios.get(
-          `https://192.168.137.1:3000/api/customerreply/reply?customerId=${customerId}`
+          `/api/customerreply/reply?customerId=${customerId}`
         );
         setQuestions(response.data.questions || response.data);
       } catch (error) {
@@ -70,7 +71,7 @@ const Account = () => {
     const fetchOrders = async () => {
       try {
         const response = await axios.get(
-          `https://192.168.137.1:3000/api/customerorder/orders?customerId=${customerId}`
+          `/api/customerorder/orders?customerId=${customerId}`
         );
         setOrders(response.data);
       } catch (error) {
@@ -93,7 +94,7 @@ const Account = () => {
   const handleUpdate = async () => {
     try {
       const response = await axios.put(
-        `https://192.168.137.1:3000/api/customeraccount/${customerId}`,
+        `/api/customeraccount/${customerId}`,
         formData
       );
       setCustomer(response.data);
@@ -107,7 +108,7 @@ const Account = () => {
     if (window.confirm("Are you sure you want to delete your account? This action cannot be undone.")) {
       try {
         await axios.delete(
-          `https://192.168.137.1:3000/api/customeraccount/${customerId}`
+          `/api/customeraccount/${customerId}`
         );
         localStorage.removeItem("token");
         localStorage.removeItem("customerId");
@@ -121,7 +122,7 @@ const Account = () => {
   const handleDeleteQuestion = async (questionId) => {
     try {
       const response = await axios.delete(
-        `https://192.168.137.1:3000/api/customerdeletereply/${questionId}`
+        `/api/customerdeletereply/${questionId}`
       );
 
       if (response.data.success) {
@@ -281,7 +282,7 @@ const Account = () => {
                       className="customer-chat-table-image"
                       src={
                         question.ProductID?.ImageFiles?.[0]
-                          ? `https://192.168.137.1:3000/uploads/${question.ProductID.ImageFiles[0]}`
+                          ? `${BACKEND_URL}/uploads/${question.ProductID.ImageFiles[0]}`
                           : "1.jpg" // Fallback image
                       }
                       alt="product"

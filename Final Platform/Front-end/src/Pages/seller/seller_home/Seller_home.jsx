@@ -15,7 +15,7 @@ const Seller_home = () => {
     const fetchProducts = async () => {
       try {
         const response = await fetch(
-          `https://192.168.137.1:3000/api/productssellerdisplay?sellerID=${sellerID}`
+          `/api/productssellerdisplay?sellerID=${sellerID}`
         );
         if (!response.ok) {
           throw new Error("Failed to fetch products");
@@ -36,7 +36,7 @@ const Seller_home = () => {
   const handleDelete = async (productId) => {
     try {
       const response = await fetch(
-        `https://192.168.137.1:3000/api/productsdelete/${productId}`,
+        `/api/productsdelete/${productId}`,
         {
           method: "DELETE",
         }
@@ -58,13 +58,13 @@ const Seller_home = () => {
     }
   };
 
-  // Helper function to format price with commas and .00
+  
   const formatPrice = (price) => {
     return price
       .toFixed(2)
       .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   };
-
+  const BACKEND_URL = `https://${window.location.hostname}:3000`;
   return (
     <div>
       <div className="all-product-container">
@@ -87,7 +87,7 @@ const Seller_home = () => {
                     <img
                       className="seller-home-table-image"
                       src={
-                        `https://192.168.137.1:3000/uploads/${product.ImageFiles[0]}` ||
+                        `${BACKEND_URL}/uploads/${product.ImageFiles[0]}` ||
                         "product.png"
                       }
                       alt={product.ProductName}

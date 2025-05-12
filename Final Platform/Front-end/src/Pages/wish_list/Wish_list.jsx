@@ -5,6 +5,7 @@ import "./wish_list.css";
 
 const Wish_list = () => {
   const [wishlist, setWishlist] = useState([]);
+  const [error, setError] = useState(null);
   const customerId = localStorage.getItem("customerId");
   const navigate = useNavigate();
 
@@ -12,81 +13,88 @@ const Wish_list = () => {
   useEffect(() => {
     const fetchWishlist = async () => {
       try {
-        const response = await axios.get(
-          `https://192.168.1.2:3000/api/wishlistdisplay/${customerId}`
-        );
+        const response = await axios.get(`/api/wishlistdisplay/${customerId}`);
         setWishlist(response.data);
+        setError(null);
       } catch (error) {
         console.error("Error fetching wishlist:", error);
+        setError("Failed to load wishlist. Please try again.");
       }
     };
-    fetchWishlist();
+    if (customerId) {
+      fetchWishlist();
+    } else {
+      setError("Please log in to view your wishlist.");
+    }
   }, [customerId]);
 
   // Delete wishlist item
   const handleDelete = async (wishlistId) => {
     try {
-      await axios.delete(
-        `https://192.168.1.2:3000/api/wishlistdisplay/${wishlistId}`
-      );
+      await axios.delete(`/api/wishlistdisplay/${wishlistId}`);
       setWishlist((prev) => prev.filter((item) => item._id !== wishlistId));
+      setError(null);
     } catch (error) {
       console.error("Error deleting wishlist item:", error);
+      setError("Failed to delete item. Please try again.");
     }
   };
+
   const handleWishClick = (productId) => {
     navigate(`/Product_details`, { state: { productId } });
+  };
+
+  const BACKEND_URL = `https://${window.location.hostname}:3000`;
+
+  // Calculate discounted price safely
+  const calculateDiscountedPrice = (price, discount) => {
+    if (typeof discount !== "number") return price.toFixed(2);
+    return (price - (price * discount) / 100).toFixed(2);
   };
 
   return (
     <div>
       <div className="wish-container">
+        {error && <div className="error-message">{error}</div>}
         <div className="wish-tbl_content">
           <table className="wish-tbl">
             <thead>
               <tr>
-                <th>Image</th>
-                <th>Name</th>
+                
+                <th>Item description</th>
                 <th>Price</th>
                 <th>Discount</th>
-                <th></th>
+                <th>Action</th>
               </tr>
             </thead>
             <tbody>
               {wishlist.length > 0 ? (
                 wishlist.map((item) => (
                   <tr key={item._id}>
+                    
                     <td
-                      data-label="Image"
+                      data-label="Item description"
                       onClick={() => handleWishClick(item.ProductID._id)}
                     >
-                      <img
-                        className="wish-image"
-                        src={`https://192.168.1.2:3000/uploads/${item.ProductID.ImageFiles[0]}`}
-                        alt={item.ProductID.ProductName}
-                      />
-                    </td>
-                    <td
-                      data-label="Name"
-                      onClick={() => handleWishClick(item.ProductID._id)}
-                    >
-                      {item.ProductID.ProductName}{" "}
+                      {item.ProductID.ProductName}
                     </td>
                     <td
                       data-label="Price"
                       onClick={() => handleWishClick(item.ProductID._id)}
                     >
-                      $
-                      {(
-                        item.ProductID.Price -
-                        (item.ProductID.Price * item.ProductID.Discount) / 100
-                      ).toFixed(2)}
+                     Rs.
+                      {calculateDiscountedPrice(
+                        item.ProductID.Price,
+                        item.ProductID.Discount
+                      )}
                     </td>
                     <td
                       data-label="Discount"
                       onClick={() => handleWishClick(item.ProductID._id)}
                     >
-                      {item.ProductID.Discount}%
+                      {typeof item.ProductID.Discount === "number"
+                        ? `${item.ProductID.Discount}%`
+                        : "N/A"}
                     </td>
                     <td data-label="Actions">
                       <button
