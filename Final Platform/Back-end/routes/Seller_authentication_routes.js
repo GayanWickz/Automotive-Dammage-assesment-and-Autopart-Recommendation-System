@@ -1,16 +1,15 @@
 import express from "express";
 import sellerauthenticationrequest from "../models/Seller_authentication_platform.js";
-
 import {
   SellerLogin,
   SellerSignup,
+  ForgotPassword,
+  ResetPassword,
 } from "../controllers/Seller_authentication_controller.js";
-
 import multer from "multer";
 
 const SellerAuthenticationRouter = express.Router();
 
-// Image storage
 const storage = multer.diskStorage({
   destination: "uploads",
   filename: (req, file, cb) => {
@@ -18,7 +17,6 @@ const storage = multer.diskStorage({
   },
 });
 
-// File validation
 const upload = multer({
   storage: storage,
   fileFilter: (req, file, cb) => {
@@ -32,32 +30,29 @@ const upload = multer({
   },
 });
 
-// Seller signup
 SellerAuthenticationRouter.post(
   "/sellersignup",
   upload.single("logoimage"),
   SellerSignup
 );
 
-// Seller login
 SellerAuthenticationRouter.post("/sellerlogin", SellerLogin);
 
-// Route to get all seller authentication requests
+SellerAuthenticationRouter.post("/forgot-password", ForgotPassword);
+
+SellerAuthenticationRouter.post("/reset-password", ResetPassword);
+
 SellerAuthenticationRouter.get("/", async (req, res) => {
   try {
-    const sellers = await sellerauthenticationrequest.find(); // Fetch all seller data
-    res.json(sellers); // Send seller data as JSON response
+    const sellers = await sellerauthenticationrequest.find();
+    res.json(sellers);
   } catch (err) {
     console.error("Error fetching seller data: ", err);
     res.status(500).json({ message: "Error fetching seller data" });
   }
 });
 
-
-//Suresh - delete fucntion ,accoring to the relevant user "userid" 
- // In Seller_authentication_routes.js
-// Define the delete route
-SellerAuthenticationRouter.delete('/:id', async (req, res) => {
+SellerAuthenticationRouter.delete("/:id", async (req, res) => {
   const { id } = req.params;
   try {
     const seller = await sellerauthenticationrequest.findByIdAndDelete(id);
@@ -71,14 +66,10 @@ SellerAuthenticationRouter.delete('/:id', async (req, res) => {
   }
 });
 
-
-
-//status...............
-SellerAuthenticationRouter.put('/:id', async (req, res) => {
+SellerAuthenticationRouter.put("/:id", async (req, res) => {
   const { status } = req.body;
-  const validStatuses = ['accepted', 'rejected', 'pending'];
+  const validStatuses = ["accepted", "rejected", "pending"];
 
-  // Check for invalid status
   if (!validStatuses.includes(status)) {
     return res.status(400).json({ message: "Invalid status value" });
   }
@@ -101,10 +92,9 @@ SellerAuthenticationRouter.put('/:id', async (req, res) => {
   }
 });
 
-// Get total sellers
 SellerAuthenticationRouter.get("/total-sellers", async (req, res) => {
   try {
-    const totalSellers = await sellerauthenticationrequest.countDocuments(); 
+    const totalSellers = await sellerauthenticationrequest.countDocuments();
     console.log("Total Sellers Count:", totalSellers);
     res.json({ totalSellers });
   } catch (err) {
@@ -112,7 +102,5 @@ SellerAuthenticationRouter.get("/total-sellers", async (req, res) => {
     res.status(500).json({ message: "Error fetching total sellers" });
   }
 });
+
 export default SellerAuthenticationRouter;
-
-
-

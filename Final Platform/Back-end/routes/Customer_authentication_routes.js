@@ -2,6 +2,9 @@ import express from "express";
 import {
   CustomerLogin,
   CustomerSignup,
+  ForgotPassword,
+  ResetPassword,
+  GoogleSignIn,
 } from "../controllers/Customer_authentication_controller.js";
 import customerauthentication from "../models/Customer_authentication_platform.js";
 const CustomerAuthenticationRouter = express.Router();
@@ -12,21 +15,27 @@ CustomerAuthenticationRouter.post("/customersignup", CustomerSignup);
 // Customer login
 CustomerAuthenticationRouter.post("/customerlogin", CustomerLogin);
 
+// Google Sign-In
+CustomerAuthenticationRouter.post("/google-signin", GoogleSignIn);
+
+// Forgot password
+CustomerAuthenticationRouter.post("/forgot-password", ForgotPassword);
+
+// Reset password
+CustomerAuthenticationRouter.post("/reset-password", ResetPassword);
 
 // Fetch all customer data
 CustomerAuthenticationRouter.get("/", async (req, res) => {
   try {
-    const customers = await customerauthentication.find(); 
+    const customers = await customerauthentication.find();
     res.json(customers); // Send as JSON response
   } catch (err) {
     console.error("Error fetching Customers data: ", err);
-    res.status(500).json({ message: "Error fetching  Customers data" });
+    res.status(500).json({ message: "Error fetching Customers data" });
   }
 });
 
-
-
-CustomerAuthenticationRouter.delete('/:id', async (req, res) => {
+CustomerAuthenticationRouter.delete("/:id", async (req, res) => {
   const { id } = req.params;
   try {
     const customer = await customerauthentication.findByIdAndDelete(id);
@@ -40,11 +49,10 @@ CustomerAuthenticationRouter.delete('/:id', async (req, res) => {
   }
 });
 
-
-// Getting all customers count,for notification............... 
+// Getting all customers count, for notification
 CustomerAuthenticationRouter.get("/total-customers", async (req, res) => {
   try {
-    const totalCustomers = await customerauthentication.countDocuments(); 
+    const totalCustomers = await customerauthentication.countDocuments();
     console.log("Total customers Count:", totalCustomers);
     res.json({ totalCustomers });
   } catch (err) {
@@ -52,4 +60,5 @@ CustomerAuthenticationRouter.get("/total-customers", async (req, res) => {
     res.status(500).json({ message: "Error fetching total sellers" });
   }
 });
+
 export default CustomerAuthenticationRouter;

@@ -6,10 +6,13 @@ const CustomerauthenticationSchema = new mongoose.Schema({
   CustomerAddress: { type: String, required: true },
   CustomerPhoneNumber: { type: String, required: true },
   CustomerPassword: { type: String, required: true },
+  resetPasswordToken: { type: String }, 
+  resetPasswordExpires: { type: Date }, 
+  googleId: { type: String }, // Optional field for Google Sign-In
 });
 
 const CustomerAuthenticationModel = mongoose.model(
- "customerauthentication",
+  "customerauthentication",
   CustomerauthenticationSchema
 );
 

@@ -5,9 +5,9 @@ const SellerauthenticationSchema = new mongoose.Schema({
   SellerEmail: { type: String, required: true, unique: true },
   SellerAddress: { type: String, required: true },
   SellerPhoneNumber: { type: String, required: true },
-  SellerLocation: { // Updated field for latitude and longitude
-    lat: { type: Number, required: true }, // Latitude
-    lng: { type: Number, required: true }, // Longitude
+  SellerLocation: {
+    lat: { type: Number, required: true },
+    lng: { type: Number, required: true },
   },
   SellerDescription: { type: String, required: true },
   SellerPassword: { type: String, required: true },
@@ -15,11 +15,13 @@ const SellerauthenticationSchema = new mongoose.Schema({
   Status: {
     type: String,
     enum: ["accepted", "rejected", "pending"],
-    default: "pending",
+    default: "accepted",
   },
   totalRatings: { type: Number, default: 0 },
-    reviewCount: { type: Number, default: 0 },
-    averageRating: { type: Number, default: 0 },
+  reviewCount: { type: Number, default: 0 },
+  averageRating: { type: Number, default: 0 },
+  resetPasswordToken: { type: String },
+  resetPasswordExpires: { type: Date },
 });
 
 const SellerAuthenticationModel = mongoose.model(

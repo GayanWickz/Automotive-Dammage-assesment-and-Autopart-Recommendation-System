@@ -86,4 +86,53 @@ Search.get("/search", async (req, res) => {
   }
 });
 
+
+
+// Advanced vehicle search route
+Search.get("/advanced-vehicle-search", async (req, res) => {
+  const { make, model, year } = req.query;
+
+  try {
+    // Validate query parameters
+    if (!make && !model && !year) {
+      return res.status(400).json({ message: "At least one search parameter (make, model, or year) is required" });
+    }
+
+    // Build the query object
+    const query = { ProductType: "Vehicle" }; // Only search for vehicles
+
+    if (make) {
+      query.VehicleBrand = { $regex: make, $options: "i" }; // Case-insensitive match
+    }
+    if (model) {
+      query.VehicleModel = { $regex: model, $options: "i" }; // Case-insensitive match
+    }
+    if (year) {
+      query.Year = parseInt(year); // Exact match for year
+    }
+
+    console.log("Advanced vehicle search query:", query);
+
+    // Query the database
+    const results = await ECommerceModel.find(query)
+      .populate("SellerID")
+      .catch((err) => {
+        console.error("Error populating SellerID:", err);
+        return [];
+      });
+
+    console.log(`Advanced vehicle search results found: ${results.length}`);
+
+    if (results.length === 0) {
+      return res.status(200).json([]);
+    }
+
+    return res.status(200).json(results);
+  } catch (error) {
+    console.error("Error during advanced vehicle search:", error);
+    res.status(500).json({ message: "Error performing advanced vehicle search" });
+  }
+});
+
+
 export default Search;

@@ -2,18 +2,20 @@ import SellerAuthenticationModel from "../models/Seller_authentication_platform.
 import jwt from "jsonwebtoken";
 import bcryptjs from "bcryptjs";
 import validator from "validator";
+import axios from "axios";
+import { v4 as uuidv4 } from "uuid";
+import https from "https";
 
 // Helper function to generate a JWT
 const generateToken = (sellerId) => {
   return jwt.sign({ id: sellerId }, process.env.JWT_SECRET || "secret", {
-    expiresIn: "1h", // Token expires in 1 hour
+    expiresIn: "1h",
   });
 };
 
 const SellerLogin = async (req, res) => {
   const { SellerEmail, SellerPassword } = req.body;
 
-  // Validate input
   if (!SellerEmail || !SellerPassword) {
     console.log("Validation failed: Missing fields");
     return res.status(400).json({
@@ -31,7 +33,6 @@ const SellerLogin = async (req, res) => {
   }
 
   try {
-    // Check if email exists
     const seller = await SellerAuthenticationModel.findOne({ SellerEmail });
     if (!seller) {
       console.log("Seller not found with email:", SellerEmail);
@@ -67,7 +68,6 @@ const SellerLogin = async (req, res) => {
       });
     }
 
-    // Validate password ,if the status is accepted
     const isMatch = await bcryptjs.compare(
       SellerPassword,
       seller.SellerPassword
@@ -80,14 +80,13 @@ const SellerLogin = async (req, res) => {
       });
     }
 
-    // Generate token for the seller
     const token = generateToken(seller._id);
 
     return res.status(200).json({
       success: true,
       message: "Login successful!",
-      sellerId: seller._id, // Include seller ID in the response
-      token, // Include the generated token
+      sellerId: seller._id,
+      token,
     });
   } catch (error) {
     console.error("Error during seller login:", error.message);
@@ -98,7 +97,6 @@ const SellerLogin = async (req, res) => {
   }
 };
 
-// Seller signup
 const SellerSignup = async (req, res) => {
   const imageFileName = req.file?.filename || "default.jpg";
 
@@ -113,7 +111,6 @@ const SellerSignup = async (req, res) => {
       SellerPassword,
     } = req.body;
 
-    // Validate input
     if (
       !SellerName ||
       !SellerEmail ||
@@ -138,7 +135,6 @@ const SellerSignup = async (req, res) => {
       });
     }
 
-    // Check if email is already registered
     const exists = await SellerAuthenticationModel.findOne({ SellerEmail });
     if (exists) {
       console.log("Email already registered:", SellerEmail);
@@ -148,10 +144,8 @@ const SellerSignup = async (req, res) => {
       });
     }
 
-    // Hash password
     const hashedPassword = await bcryptjs.hash(SellerPassword, 10);
 
-    // Create a new seller
     const newSeller = new SellerAuthenticationModel({
       SellerName,
       SellerEmail,
@@ -160,7 +154,7 @@ const SellerSignup = async (req, res) => {
       SellerLocation: JSON.parse(SellerLocation),
       SellerDescription,
       SellerPassword: hashedPassword,
-      LogoImageFile: imageFileName, // Store local file name
+      LogoImageFile: imageFileName,
     });
 
     await newSeller.save();
@@ -179,4 +173,105 @@ const SellerSignup = async (req, res) => {
   }
 };
 
-export { SellerLogin, SellerSignup };
+const ForgotPassword = async (req, res) => {
+  const { SellerEmail } = req.body;
+
+  if (!SellerEmail || !validator.isEmail(SellerEmail)) {
+    return res.status(400).json({
+      success: false,
+      message: "Valid email is required.",
+    });
+  }
+
+  try {
+    const seller = await SellerAuthenticationModel.findOne({ SellerEmail });
+    if (!seller) {
+      return res.status(404).json({
+        success: false,
+        message: "Email not found.",
+      });
+    }
+
+    const resetToken = uuidv4();
+    const resetTokenExpires = Date.now() + 3600000; // 1 hour expiry
+
+    seller.resetPasswordToken = resetToken;
+    seller.resetPasswordExpires = resetTokenExpires;
+    await seller.save();
+
+    const resetUrl = `https://192.168.137.1:5173/seller-reset-password/${resetToken}`;
+    const emailPayload = {
+      to: SellerEmail,
+      subject: "Password Reset Request",
+      text: `You requested a password reset. Click this link to reset your password: ${resetUrl}\nThis link will expire in 1 hour.`,
+    };
+
+    await axios.post("https://192.168.137.1:3000/api/email/send-email", emailPayload, {
+      httpsAgent: new https.Agent({
+        rejectUnauthorized: false,
+      }),
+    });
+
+    res.status(200).json({
+      success: true,
+      message: "Password reset email sent.",
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      success: false,
+      message: "Failed to send reset email.",
+    });
+  }
+};
+
+const ResetPassword = async (req, res) => {
+  const { token, newPassword } = req.body;
+
+  if (!token || !newPassword) {
+    return res.status(400).json({
+      success: false,
+      message: "Token and new password are required.",
+    });
+  }
+
+  if (newPassword.length < 6) {
+    return res.status(400).json({
+      success: false,
+      message: "Password must be at least 6 characters.",
+    });
+  }
+
+  try {
+    const seller = await SellerAuthenticationModel.findOne({
+      resetPasswordToken: token,
+      resetPasswordExpires: { $gt: Date.now() },
+    });
+
+    if (!seller) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid or expired reset token.",
+      });
+    }
+
+    const hashedPassword = await bcryptjs.hash(newPassword, 10);
+    seller.SellerPassword = hashedPassword;
+    seller.resetPasswordToken = undefined;
+    seller.resetPasswordExpires = undefined;
+    await seller.save();
+
+    res.status(200).json({
+      success: true,
+      message: "Password reset successful.",
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      success: false,
+      message: "Failed to reset password.",
+    });
+  }
+};
+
+export { SellerLogin, SellerSignup, ForgotPassword, ResetPassword };

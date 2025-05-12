@@ -14,13 +14,13 @@ gmailController.post("/send-email", async (req, res) => {
     const transporter = nodemailer.createTransport({
       service: "gmail",
       auth: {
-        user: "autopartgenius.nsbm@gmail.com", 
-        pass: "sxby lksk ybgq niny ", 
+        user: "autopartgenius@gmail.com", 
+        pass: "yeae gpep bjak vbia ", 
       },
     });
 
     const mailOptions = {
-      from: "green.shopping.nsbm@gmail.com",
+      from: "autopartgenius@gmail.com",
       to: to,
       subject: subject,
       text: text,
