@@ -49,17 +49,20 @@ def ai_search():
         img_no_bg = cv2.cvtColor(np.array(img_no_bg), cv2.COLOR_RGBA2RGB)
 
         # Save temporarily for YOLO processing
-        cv2.imwrite("temp_image.jpg", cv2.cvtColor(img_no_bg, cv2.COLOR_RGB2BGR))
+        temp_filename = "temp_image.jpg"
+        cv2.imwrite(temp_filename, cv2.cvtColor(img_no_bg, cv2.COLOR_RGB2BGR))
 
         # Run prediction with the updated logic
-        prediction, neighbors, confidence, _ = predict_image_with_neighbors_and_confidence("temp_image.jpg")
+        prediction, neighbors, confidence, _ = predict_image_with_neighbors_and_confidence(temp_filename)
 
-        # Check if confidence is below 85%
+        # Print prediction details to console (similar to Colab)
+        print(f"\nPrediction for {image_file.filename}: {prediction}")
+        print(f"Nearest neighbor labels: {neighbors}")
+        print(f"Confidence: {confidence:.4f}")
+
+        # Check if confidence is less than 85%
         if confidence < 0.85:
-            return jsonify({
-                'error': 'Cannot identify, please insert image again',
-                'confidence': float(confidence)
-            }), 400
+            return jsonify({'error': 'cannot identify please try again'}), 400
 
         return jsonify({
             'class': prediction,
@@ -68,6 +71,7 @@ def ai_search():
         })
 
     except Exception as e:
+        print(f"Error processing {image_file.filename}: {str(e)}")
         return jsonify({'error': str(e)}), 500
 
 def predict_image_with_neighbors_and_confidence(image_path):
